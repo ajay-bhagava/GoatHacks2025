@@ -119,7 +119,7 @@ export default function Home() {
                 <motion.p className="flex justify-center items-center">
 
                     <button className="flex items-center space-x-2 bg-red-600 text-white p-4 rounded-md hover:bg-red-700">
-                        <span>Get Started</span>
+                        <a href="/login">Get Started</a>
                         <ArrowRight />
                     </button>
                 </motion.p>
