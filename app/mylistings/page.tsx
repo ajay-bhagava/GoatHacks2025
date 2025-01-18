@@ -19,6 +19,7 @@ export default function page() {
                     <CircleUserRound className={"w-9 h-9"} />
                 </div>
             </div>
+            <div>My Listings</div>
             <Content />
         </>
     );
