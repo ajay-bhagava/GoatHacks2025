@@ -140,7 +140,18 @@ const Page = () => {
                     <div className={"bg-white p-10 size-[90%] rounded-2xl shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)]"}>
                         <div className={"text-xl font-bold"}>Preview</div>
                         <div className="grid grid-cols-[3fr_2fr] border-2 border-gray-100 rounded-2xl p-2 h-[95%]">
-                            <div>image</div>
+                            {imagePreview ? (
+                                <div className={"h-fit pr-2 max-w-full max-h-full"}>
+                                    <img
+                                        src={imagePreview}
+                                        alt="Uploaded"
+                                        className="size-fit rounded-2xl max-w-full max-h-full"
+                                    />
+                                </div>
+
+                            ) : (
+                                <div className="bg-[#e9e9e9] rounded-2xl w-full h-full"></div>
+                            )}
                             <div>
                                 <h1 className="text-3xl font-bold">Title</h1>
                                 <p className="font-light">$$$</p>
