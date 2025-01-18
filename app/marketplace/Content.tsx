@@ -11,7 +11,7 @@ export default function Content() {
                     <Search className="text-gray-500 w-5 h-5"/>
                     <input
                         type="text"
-                        placeholder="Search spots"
+                        placeholder="Search items"
                         className="bg-transparent ml-2 w-full outline-none text-gray-700"
                     />
                 </div>
@@ -82,7 +82,7 @@ export default function Content() {
                 </div>
             </aside>
 
-            <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4 h-screen w-full p-6"}>
+            <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4  p-6 w-full "}>
                 <ItemCard location={"Off-Campus Apartment"} price={120} title={"Scandinavian Bench"}/>
             </div>
         </div>
