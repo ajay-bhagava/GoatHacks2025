@@ -2,7 +2,7 @@
 "use client"
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {ArrowDown} from "lucide-react";
+import {ArrowDown, ArrowRight} from "lucide-react";
 import { useRef } from "react";
 
 import './globals.css';
@@ -82,7 +82,7 @@ const handleArrowClick = () => {
                     Learning, made affordable
                 </motion.h1>
                 <motion.p
-                    className="text-gray-400 font-[500]  text-md lg:text-xl text-center"
+                    className="text-gray-400 font-[500] font-semibold text-md lg:text-xl text-center"
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
@@ -91,6 +91,24 @@ const handleArrowClick = () => {
                     Buy and sell with the WPI community.
                     <br/>Fast, simple, and right on campus
                 </motion.p>
+                <motion.p
+                    className="text-gray-400 font-[500]  text-md lg:text-xl text-center"
+                    variants={textVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{duration: 0.5, delay: 1.5}}
+                >
+                    <br/> Ready to trade?
+                </motion.p>
+                <motion.p className="flex justify-center items-center">
+
+    <button className="flex items-center space-x-2 bg-red-600 text-white p-4 rounded-md hover:bg-red-700">
+      <span>Get Started</span>
+      <ArrowRight />
+    </button>
+</motion.p>
+
+
             </div>
 
             <div className="absolute -bottom-[20%] w-full  grid-cols-1 lg:grid-cols-5 gap-x-2 hidden md:flex">
@@ -175,7 +193,7 @@ const handleArrowClick = () => {
             <div
                 className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent pointer-events-none"/>
             {/* Bouncing Arrow */}
-            <div className="flex justify-center items-end absolute inset-0 pointer-events-none">
+            {/* <div className="flex justify-center items-end absolute inset-0 pointer-events-none">
                 <motion.button
                     className="z-10 pointer-events-auto mb-4" // Adjust spacing with mb-4 (bottom margin)
                     variants={arrowVariants}
@@ -186,7 +204,7 @@ const handleArrowClick = () => {
                         <ArrowDown className="text-white h-8 w-8"/>
                     </div>
                 </motion.button>
-            </div>
+            </div> */}
 
             {/* Next Section to Scroll To */}
             <section ref={nextSectionRef} className="h-screen bg-gray-200 flex items-center justify-center">
