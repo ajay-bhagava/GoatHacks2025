@@ -13,14 +13,6 @@ export default function Content() {
   const [reverse, setReverse] = useState(false);
 
   useEffect(() => {
-    const login = async () => {
-        try {
-            await loginUser("ajay.bhagava@gmail.com", "12345678");
-        } catch (error) {
-            console.error("Login failed", error);
-        }
-    };
-    login();
     // Fetch posts on load
     const fetchPosts = async () => {
       try {
