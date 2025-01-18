@@ -15,6 +15,7 @@
     "gsap": "^3.12.7",
     "lucide-react": "^0.473.0",
     "next": "15.1.5",
+    "pocketbase": "^0.25.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.6.0",
