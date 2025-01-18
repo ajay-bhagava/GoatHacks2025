@@ -19,7 +19,7 @@ export default function page() {
                     <CircleUserRound className={"w-9 h-9"} />
                 </div>
             </div>
-            <div>My Listings</div>
+            <div className="py-4 px-6 text-lg font-semibold">My Listings</div>
             <Content />
         </>
     );
