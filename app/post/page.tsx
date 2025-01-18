@@ -1,8 +1,9 @@
 "use client";
 import { ArrowUp } from "lucide-react";
-import { useState } from "react";
 import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
+import { useState, useEffect } from "react";
+import { createPost, loginUser } from "../../lib/pocketbase";
 
 const Page = () => {
     const [fileName, setFileName] = useState("");
@@ -11,60 +12,36 @@ const Page = () => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [tags, setTags] = useState("");
+    const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
-    // Handle file change to display image and file name
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            setFileName(file.name);
-            setImagePreview(URL.createObjectURL(file));
+            const filesArray = Array.from(event.target.files);
+            setSelectedImages(filesArray);
+            setFileName(filesArray[0].name);
+            setImagePreview(URL.createObjectURL(filesArray[0]));
         }
     };
 
-    const handleCreatePost = async () => {
-        const currentUser = pb.authStore.model;
-
-        if (!currentUser) {
-            console.error("User is not authenticated.");
-            window.location.href = "/";
-            return;
-        }
-
-        let username = currentUser.username;
-        if (username.startsWith("user")) {
-            const email = currentUser.email;
-            username = email.substring(0, email.indexOf("@"));
-        }
-
-        const data = new FormData();
-        data.append("title", title);
-        data.append("description", description);
-        data.append("price", price);
-        data.append("tags", tags);
-        data.append("username", username);
-
-        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-        if (fileInput && fileInput.files && fileInput.files[0]) {
-            const file = fileInput.files[0];
-            data.append("images", file);
-        }
-
-        try {
-            const record = await pb.collection("Post").create(data);
-
-            if (record) {
-                const userPosts = currentUser.posts || [];
-                const updatedPosts = [...userPosts, record.id];
-
-                const userData = {
-                    posts: updatedPosts,
-                };
-
-                await pb.collection("users").update(currentUser.id, userData);
-                window.location.href = "/dashboard";
+    // Login and set up user session
+    useEffect(() => {
+        const login = async () => {
+            try {
+                await loginUser("ajay.bhagava@gmail.com", "12345678");
+            } catch (error) {
+                console.error("Login failed", error);
             }
+        };
+        login();
+    }, []);
+
+    // Handle post creation
+    const handleCreatePost = async () => {
+        try {
+            const userUpdate = await createPost(title, description, price, selectedImages);
+            console.log("Post created successfully:", userUpdate);
         } catch (error) {
-            console.error("Error creating post:", error);
+            console.error('Error creating post:', error);
         }
     };
 
@@ -111,16 +88,17 @@ const Page = () => {
                             </div>
                         </div>
 
-                        {/* Form Inputs */}
+                        {/* Form inputs for title, description, price, tags */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Title</label>
                             <input
                                 type="text"
                                 placeholder="Add a title"
-                                className="w-full border-4 border-gray-300 rounded-xl p-3 mt-1"
+                                className="w-full border-4 border-gray-300  rounded-xl p-3 mt-1"
                                 onChange={(event) => setTitle(event.target.value)}
                             />
                         </div>
+
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Description</label>
                             <textarea
@@ -130,6 +108,7 @@ const Page = () => {
                                 onChange={(event) => setDescription(event.target.value)}
                             ></textarea>
                         </div>
+
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Price</label>
                             <input
@@ -139,6 +118,7 @@ const Page = () => {
                                 onChange={(event) => setPrice(event.target.value)}
                             />
                         </div>
+
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Tags</label>
                             <input
@@ -148,14 +128,10 @@ const Page = () => {
                                 onChange={(event) => setTags(event.target.value)}
                             />
                         </div>
-                        <div>
-                            <button
-                                className="text-white font-semibold p-3 rounded-full bg-red-600"
-                                onClick={handleCreatePost}
-                            >
-                                Publish
-                            </button>
-                        </div>
+
+                        <button className={"text-white font-semibold p-3 rounded-full bg-red-600"} onClick={handleCreatePost}>
+                            Publish
+                        </button>
                     </div>
                     <br className={"mt-24"}/>
                 </aside>
