@@ -1,32 +1,43 @@
 "use client";
-import { FormEvent, useState } from "react";
-import { createUser } from '@/lib/pocketbase.js'
+
+import { useEffect, useRef, useState } from "react";
+import { createUser, loginUser } from '@/lib/pocketbase.js'
 
 export default function page() {
     const [err, setErr] = useState(false);
+    const form = useRef<HTMLFormElement>(null)
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
-        const form = e.currentTarget as HTMLFormElement
-
-        const { email, password, passwordConfirm } = Object.fromEntries(new FormData(form))
-        try {
-            await createUser(password, passwordConfirm, email)
-            location.href = "/"
-        } catch {
-            setErr(true)
+        const { email, password } = Object.fromEntries(new FormData(e.currentTarget))
+        switch (e.submitter.name) {
+            case "signup":
+                console.log("signup")
+                createUser(password, password, email)
+                    .then(_ => location.href = "/", _ => setErr(true))
+                break;
+            case "login":
+                loginUser(email, password)
+                    .then(_ => location.href = "/", _ => setErr(true))
+                console.log("login")
+                break;
         }
     }
 
-    return <div className="w-1/2 mx-auto">
-        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+    useEffect(() => {
+        form.current?.addEventListener("submit", handleSubmit)
+    })
+
+
+    return <div className="w-1/3 mx-auto card shadow-xl p-4">
+        <form className="flex flex-col gap-2" ref={form}>
             <label className="form-control ">
                 <div className="label">
                     <span className="label-text">
                         Email
                     </span>
                 </div>
-                <input type="email" className="input input-bordered" name="email" placeholder="Email" />
+                <input type="email" className="input input-bordered" name="email" placeholder="Email" required />
             </label>
             <label className="form-control ">
                 <div className="label">
@@ -34,17 +45,12 @@ export default function page() {
                         Password
                     </span>
                 </div>
-                <input type="password" className="input input-bordered" name="password" placeholder="Password" />
+                <input type="password" className="input input-bordered" name="password" placeholder="Password" required />
             </label>
-            <label className="form-control ">
-                <div className="label">
-                    <span className="label-text">
-                        Confirm Password
-                    </span>
-                </div>
-                <input type="password" className="input input-bordered" name="passwordConfirm" placeholder="Confirm Password" />
-            </label>
-            <button className="btn btn-primary">Log In!</button>
+            <div className="w-full flex gap-2">
+                <button name="signup" type="submit" className="btn btn-neutral btn-outline flex-1">Sign Up</button>
+                <button name="login" type="submit" className="btn btn-primary flex-1">Log In</button>
+            </div>
             {err && <span className="text-error">Error Creating User</span>}
         </form>
     </div>
