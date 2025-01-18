@@ -1,5 +1,6 @@
 import Image from "next/image";
 import {CircleUserRound, DiamondPlus, MessageCircle} from "lucide-react";
+import Link from "next/link";
 
 export default function NavBar() {
     return <div className={"p-3 flex justify-between items-center drop-shadow-md bg-white"}>
@@ -11,7 +12,7 @@ export default function NavBar() {
             </div>
         </div>
         <div className={"gap-x-3 flex"}>
-            <DiamondPlus className={"w-9 h-9"} />
+            <Link href={"/post"}><DiamondPlus className={"w-9 h-9"} /></Link>
             <MessageCircle className={"w-9 h-9"} />
             <CircleUserRound className={"w-9 h-9"} />
         </div>

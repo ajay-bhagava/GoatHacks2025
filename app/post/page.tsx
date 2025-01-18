@@ -3,7 +3,7 @@ import { ArrowUp } from "lucide-react";
 import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
 import { useState, useEffect } from "react";
-import { createPost, loginUser } from "../../lib/pocketbase";
+import { createPost, loginUser } from "@/lib/pocketbase";
 
 const Page = () => {
     const [fileName, setFileName] = useState("");
@@ -57,7 +57,7 @@ const Page = () => {
                 {/* Sidebar */}
                 <aside
                     className="p-4 w-1/4 h-full shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)] fixed top-16 left-0 overflow-y-auto bg-white">
-                    <div className="space-y-4">
+                    <div className="space-y-4 mb-20">
                         {/* Image Upload */}
                         <div className="flex">
                             <div
@@ -129,40 +129,39 @@ const Page = () => {
                             />
                         </div>
 
-                        <button className={"text-white font-semibold p-3 rounded-full bg-red-600"} onClick={handleCreatePost}>
+                        <button
+                            className={"text-white font-semibold p-3 mb-10 rounded-full bg-red-600 cursor-pointer hover:bg-red-700 transition"}
+                            onClick={handleCreatePost}>
                             Publish
                         </button>
                     </div>
-                    <br className={"mt-24"}/>
+
                 </aside>
 
                 <div className="flex-1 ml-[25%] bg-[#f1f1f1] flex justify-center items-center overflow-hidden">
                     <div className={"bg-white p-10 size-[90%] rounded-2xl shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)]"}>
                         <div className={"text-xl font-bold"}>Preview</div>
-                        <div className="grid grid-cols-[3fr_2fr] border-2 border-gray-100 rounded-2xl p-2 h-[95%]">
+                        <div className="grid grid-cols-2 border-2 border-gray-100 rounded-2xl p-2 h-[95%] gap-x-2">
                             {imagePreview ? (
-                                <div className={"h-fit pr-2 max-w-full max-h-full"}>
                                     <img
                                         src={imagePreview}
                                         alt="Uploaded"
-                                        className="size-fit rounded-2xl max-w-full max-h-full"
+                                        className="size-fit rounded-2xl max-w-full max-h-[87.5%] object-cover"
                                     />
-                                </div>
-
                             ) : (
                                 <div className="bg-[#e9e9e9] rounded-2xl w-full h-full"></div>
                             )}
                             <div>
-                                <h1 className="text-3xl font-bold">Title</h1>
-                                <p className="font-light">$$$</p>
+                                <h1 className="text-3xl font-bold">{title}</h1>
+                                <p className="font-light">${price}</p>
                                 <p className="text-gray-600">Posted on 1/18/2025</p>
-                                <p className="text-2xl font-bold">Description</p>
-                                <p>Condition: New</p>
-                                <div className="rounded-2xl w-fit p-3 bg-[#e9e9e9]">tags</div>
+                                <div className="rounded-2xl w-fit p-3 bg-[#e9e9e9]">{tags}</div>
+
+                                <p className="text-lg break-words mt-10">{description}</p>
+
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
