@@ -83,7 +83,7 @@ export default function Content() {
             </aside>
 
             <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4  p-6 w-full "}>
-                <ItemCard location={"Off-Campus Apartment"} price={120} title={"Scandinavian Bench"}/>
+                <ItemCard location={"Off-Campus Apartment"} price={120} title={"Scandinavian Bench"} description={"Great bench, i sat on it so many times."}/>
             </div>
         </div>
     )

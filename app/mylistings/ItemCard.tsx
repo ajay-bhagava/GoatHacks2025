@@ -17,9 +17,8 @@ interface ItemCardProps {
     tags?: [],
     contact?: string;
     date?: string;
-    description: string;
 }
-const ItemCard: React.FC<ItemCardProps> = ({price,title, description,location,tags,contact, date}) => {
+const ItemCard: React.FC<ItemCardProps> = ({price,title,location,tags,contact, date}) => {
   return(
       <div>
           <Dialog>
@@ -34,19 +33,13 @@ const ItemCard: React.FC<ItemCardProps> = ({price,title, description,location,ta
                   </div>
               </DialogTrigger>
               <DialogContent>
-
-                  <div className={"grid grid-cols-2 gap-x-3"}>
-                      <Image src={"/bench.jpg"} alt={"byeu"} width={500} height={750} className={"rounded-lg object-cover"}/>
-                      <DialogHeader>
-                          <DialogTitle className={"text-2xl"}>{title}</DialogTitle>
-                          <DialogDescription>
-                              <h1 className={"font-semibold text-xl text-black"}>${price}</h1>
-                              {tags}
-                              {contact}
-                              <h1 className={"mt-10"}>{description}</h1>
-                          </DialogDescription>
-                      </DialogHeader>
-                  </div>
+                  <DialogHeader>
+                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                      <DialogDescription>
+                          This action cannot be undone. This will permanently delete your account
+                          and remove your data from our servers.
+                      </DialogDescription>
+                  </DialogHeader>
               </DialogContent>
           </Dialog>
       </div>
