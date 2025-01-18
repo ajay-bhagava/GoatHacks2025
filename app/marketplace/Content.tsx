@@ -1,4 +1,5 @@
 import {Armchair, BookText, NotebookPen, Plug, Search, Shirt, ShoppingBasket, Store, Tag, Wrench} from "lucide-react";
+import ItemCard from "@/app/marketplace/ItemCard";
 
 export default function Content() {
     return(
@@ -10,7 +11,7 @@ export default function Content() {
                     <Search className="text-gray-500 w-5 h-5"/>
                     <input
                         type="text"
-                        placeholder="Search spots"
+                        placeholder="Search items"
                         className="bg-transparent ml-2 w-full outline-none text-gray-700"
                     />
                 </div>
@@ -30,7 +31,9 @@ export default function Content() {
                         <h1 className={"font-semibold"}>Selling</h1>
                     </div>
                 </div>
+
                 <hr className={"mb-3"}/>
+
                 {/* Categories */}
                 <div className={""}>
                     <h1 className={"font-semibold mb-3"}>Categories</h1>
@@ -77,10 +80,10 @@ export default function Content() {
                         <h1 className={"font-semibold"}>School Supplies</h1>
                     </div>
                 </div>
-
             </aside>
-            <div className={"grid grid-cols-4 h-full"}>
 
+            <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4  p-6 w-full "}>
+                <ItemCard location={"Off-Campus Apartment"} price={120} title={"Scandinavian Bench"}/>
             </div>
         </div>
     )
