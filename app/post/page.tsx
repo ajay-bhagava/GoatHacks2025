@@ -70,6 +70,10 @@ const Page = () => {
     return (
         <div>
             <div className={"flex"}>
+            {/* Navbar */}
+            <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
+                <NavBar/>
+            </div>
 
                 <aside className={"p-4 w-1/4 h-full shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)]"}>
                     <div className={"space-y-4"}>
