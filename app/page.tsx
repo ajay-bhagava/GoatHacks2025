@@ -29,20 +29,21 @@ export default function Home() {
             <div className="relative">
                 <div className="absolute bg-[rgba(0,0,0,0.5)] w-screen h-full" />
                 <div className="grid grid-rows-3 grid-cols-4 gap-2 p-2 h-full w-screen">
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image2.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image3.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image4.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image4.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example2.png" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example3.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example4.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example5.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example6.png" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example7.png" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example8.png" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example9.png" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example10.png" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example11.png" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/example_items/example12.png" className="rounded-xl object-cover max-h-full w-full" /></div>
                 </div></div>
-            <div className="top-1/2 left-1/2 absolute translate-y-[-50%] translate-x-[-50%]">
+            <div className="top-1/2 left-1/2 bg-white p-6 py-8 rounded-lg absolute translate-y-[-50%] translate-x-[-50%] ">
+                <div className={"absolute  size-full  -z-10 rounded-2xl"}/>
                 <motion.h1
                     className="font-[600] text-5xl lg:text-6xl text-center mb-4"
                     variants={textVariants}
