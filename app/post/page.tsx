@@ -106,6 +106,7 @@ const Page = () => {
                                     multiple
                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                     onChange={handleFileChange}
+                                    required={true}
                                 />
                             </div>
                         </div>
@@ -117,6 +118,7 @@ const Page = () => {
                                 placeholder="Add a title"
                                 className="w-full border-4 border-gray-300  rounded-xl p-3 mt-1"
                                 onChange={(event) => setTitle(event.target.value)}
+                                required={true}
                             />
                         </div>
 
@@ -137,6 +139,7 @@ const Page = () => {
                                 placeholder="Price"
                                 className="w-full border-4 border-gray-300 rounded-xl p-3 mt-1"
                                 onChange={(event) => setPrice(event.target.value)}
+                                required={true}
                             />
                         </div>
 
@@ -194,7 +197,7 @@ const Page = () => {
                             <div>
                                 <h1 className="text-3xl font-bold">{title}</h1>
                                 <p className="font-light">${price}</p>
-                                <p className="text-gray-600">Posted on 1/18/2025</p>
+                                <p className="text-gray-600">Posted on 1/19/2025</p>
                                 <div className="rounded-2xl w-fit p-3 bg-[#e9e9e9]">{tags}</div>
 
                                 <p className="text-lg break-words mt-10">{description}</p>
