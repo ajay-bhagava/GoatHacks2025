@@ -21,13 +21,13 @@ import { useEffect, useState } from "react";
 interface Post {
     id: string;
     description: string;
-    image: string;
+    image: string[];
     price: number;
     title: string;
     location: string;
     contact?: string;
     date?: string;
-    imageURL: string;
+    imageURLs: string[];
     tags: string;
 }
 
@@ -42,10 +42,11 @@ export default function Content() {
 
                 const resolvedPosts = await Promise.all(
                     fetchedPosts.map(async (post: RecordModel) => {
-                        const imageURL = pb.files.getURL(post, post.Images[0]);
+                        const imageURLs = post.Images.map((image: string) => pb.files.getURL(post,image));
+                        //const imageURL = pb.files.getURL(post, post.Images[]);
                         return {
                             id: post.id,
-                            image: post.Images[0],
+                            image: post.Images,
                             tags: post.Tags,
                             price: post.Price || 0,
                             title: post.Title || "Untitled",
@@ -53,7 +54,7 @@ export default function Content() {
                             contact: post.contact,
                             date: post.date,
                             description: post.Description,
-                            imageURL,
+                            imageURLs,
                         };
                     })
                 );
@@ -186,7 +187,7 @@ export default function Content() {
                             contact={post.contact}
                             date={post.date}
                             tags={post.tags}
-                            imageURL={post.imageURL}
+                            imageURLs={post.imageURLs}
                             description={post.description}
                         />
                     ))

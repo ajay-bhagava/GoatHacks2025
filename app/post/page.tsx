@@ -2,7 +2,7 @@
 import { ArrowUp } from "lucide-react";
 import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
-import { useState, useEffect, SetStateAction } from "react";
+import React, { useState, useEffect } from "react";
 import { createPost, loginUser } from "@/lib/pocketbase";
 import {
     Select,
@@ -12,11 +12,19 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/select"
+} from "@/components/select";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Page = () => {
     const [fileName, setFileName] = useState("");
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
@@ -24,18 +32,17 @@ const Page = () => {
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
+        if (event.target.files) {
             const filesArray = Array.from(event.target.files);
-            setSelectedImages(filesArray);
-            setFileName(filesArray[0].name);
-            setImagePreview(URL.createObjectURL(filesArray[0]));
+            setSelectedImages((prevImages) => [...prevImages, ...filesArray]);
+            const newPreviews = filesArray.map((file) => URL.createObjectURL(file));
+            setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
         }
     };
 
-    // Handle post creation
     const handleCreatePost = async () => {
         try {
-            const userUpdate = await createPost(title, description, price, selectedImages, tags);
+            const userUpdate = await createPost(title, description, price, selectedImages);
             console.log("Post created successfully:", userUpdate);
         } catch (error) {
             console.error('Error creating post:', error);
@@ -46,10 +53,9 @@ const Page = () => {
         <div className="h-screen flex flex-col">
             {/* Navbar */}
             <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
-                <NavBar/>
+                <NavBar />
             </div>
 
-            {/* Main Layout */}
             <div className="flex flex-1 pt-16">
                 {/* Sidebar */}
                 <aside
@@ -60,25 +66,31 @@ const Page = () => {
                             <div
                                 className="p-4 rounded-3xl text-center bg-[#e9e9e9] size-36 flex flex-col justify-center items-center relative"
                             >
-                                {imagePreview ? (
-                                    <img
-                                        src={imagePreview}
-                                        alt="Uploaded"
-                                        className="object-cover size-full rounded-3xl"
-                                    />
+                                {imagePreviews.length > 0 ? (
+                                    <div className="flex gap-2">
+                                        {imagePreviews.map((preview, index) => (
+                                            <img
+                                                key={index}
+                                                src={preview}
+                                                alt={`Uploaded ${index}`}
+                                                className="object-cover size-full rounded-3xl w-20 h-20"
+                                            />
+                                        ))}
+                                    </div>
                                 ) : (
                                     <>
                                         <div className="p-1 inline-block bg-black rounded-full">
-                                            <ArrowUp className="h-6 w-6 text-white"/>
+                                            <ArrowUp className="h-6 w-6 text-white" />
                                         </div>
                                         <h1 className="mt-4 text-sm">
-                                            Choose a file to drag and drop <br/> it here
+                                            Choose files to drag and drop here
                                         </h1>
                                     </>
                                 )}
                                 <input
                                     type="file"
                                     accept="image/*"
+                                    multiple
                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                     onChange={handleFileChange}
                                 />
@@ -116,7 +128,7 @@ const Page = () => {
                             />
                         </div>
 
-                        <Select onValueChange={(value: SetStateAction<string>) => setTags(value)}>
+                        <Select onValueChange={(value) => setTags(value)}>
                             <SelectTrigger className="">
                                 <SelectValue placeholder="Select a tag" />
                             </SelectTrigger>
@@ -133,29 +145,40 @@ const Page = () => {
                             </SelectContent>
                         </Select>
 
-
                         <button
                             className={"text-white font-semibold p-3 mb-10 rounded-full bg-red-600 cursor-pointer hover:bg-red-700 transition"}
                             onClick={handleCreatePost}>
                             Publish
                         </button>
                     </div>
-
                 </aside>
 
+
                 <div className="flex-1 ml-[25%] bg-[#f1f1f1] flex justify-center items-center overflow-hidden">
-                    <div className={"bg-white p-10 size-[90%] rounded-2xl shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)]"}>
-                        <div className={"text-xl font-bold"}>Preview</div>
-                        <div className="grid grid-cols-2 border-2 border-gray-100 rounded-2xl p-2 h-[95%] gap-x-2">
-                            {imagePreview ? (
-                                    <img
-                                        src={imagePreview}
-                                        alt="Uploaded"
-                                        className="size-fit rounded-2xl max-w-full max-h-[87.5%] object-cover"
-                                    />
-                            ) : (
-                                <div className="bg-[#e9e9e9] rounded-2xl w-full h-full"></div>
-                            )}
+                    <div className=" bg-white p-5 rounded-xl shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)]">
+                        <div className="text-xl font-bold">Preview</div>
+                        <div className="grid grid-cols-2 border-2 border-gray-100 rounded-2xl p-2 h-[95%] gap-x-2 mt-4">
+                            <Carousel className="w-full max-w-md">
+                                <CarouselContent>
+                                    {imagePreviews.length > 0 ? (
+                                        imagePreviews.map((preview, index) => (
+                                            <CarouselItem key={index}>
+                                                <div className="p-1">
+                                                    <Card>
+                                                        <CardContent className="flex aspect-square items-center justify-center p-6">
+                                                            <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full rounded-3xl" />
+                                                        </CardContent>
+                                                    </Card>
+                                                </div>
+                                            </CarouselItem>
+                                        ))
+                                    ) : (
+                                        <div className="bg-[#e9e9e9] rounded-2xl w-full h-full"></div>
+                                    )}
+                                </CarouselContent>
+                                <CarouselPrevious />
+                                <CarouselNext />
+                            </Carousel>
                             <div>
                                 <h1 className="text-3xl font-bold">{title}</h1>
                                 <p className="font-light">${price}</p>
@@ -163,7 +186,6 @@ const Page = () => {
                                 <div className="rounded-2xl w-fit p-3 bg-[#e9e9e9]">{tags}</div>
 
                                 <p className="text-lg break-words mt-10">{description}</p>
-
                             </div>
                         </div>
                     </div>
@@ -171,6 +193,6 @@ const Page = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Page;
