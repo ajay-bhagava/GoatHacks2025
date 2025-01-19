@@ -18,6 +18,7 @@ interface ItemCardProps {
   contact?: string;
   date?: string;
   imageURL: string;
+  description: string;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
@@ -29,6 +30,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   contact,
   date,
   imageURL,
+    description
 }) => {
   return (
     <div>
@@ -50,12 +52,18 @@ const ItemCard: React.FC<ItemCardProps> = ({
           </div>
         </DialogTrigger>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>
-              This is a detailed view of the listing. Additional information can be added here.
-            </DialogDescription>
-          </DialogHeader>
+          <div className={"grid grid-cols-2 gap-x-3"}>
+            <Image src={"/bench.jpg"} alt={"byeu"} width={500} height={750} className={"rounded-lg object-cover"}/>
+            <DialogHeader>
+              <DialogTitle className={"text-2xl"}>{title}</DialogTitle>
+              <DialogDescription>
+                <h1 className={"font-semibold text-xl text-black"}>${price}</h1>
+                {tags}
+                {contact}
+                <h1 className={"mt-10"}>{description}</h1>
+              </DialogDescription>
+            </DialogHeader>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

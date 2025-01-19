@@ -6,6 +6,7 @@ import { RecordModel } from "pocketbase";
 
 interface Post {
   id: string;
+  description: string;
   image: string;
   price: number;
   title: string;
@@ -38,6 +39,7 @@ export default function Content() {
               tags: post.tags,
               contact: post.contact,
               date: post.date,
+              description: post.Description,
               imageURL,
             };
           })
@@ -74,6 +76,7 @@ export default function Content() {
               contact={post.contact}
               date={post.date}
               imageURL={post.imageURL}
+              description={post.description}
             />
           ))
         ) : (
