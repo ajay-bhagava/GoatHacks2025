@@ -159,7 +159,7 @@ export default function Content() {
                 </div>
 
                 <div>
-                    <div className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}>
+                    <div className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition cursor-pointer"}>
                         <div className={" ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
                             <ShoppingBasket className={"w-5 h-5 "} />
                         </div>
@@ -180,16 +180,16 @@ export default function Content() {
                 <div>
                     <h1 className={"font-semibold mb-3"}>Categories</h1>
                     <div
-                        className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
+                        className={"flex cursor-pointer gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
                         onClick={() => setSelectedCategory(null)}
                     >
-                        <div className={"ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
+                        <div className={"ml-2 cursor-pointer bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
                             <Store className={"w-5 h-5 "} />
                         </div>
                         <h1 className={"font-semibold"}>Browse All Items</h1>
                     </div>
                     <div
-                        className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
+                        className={"flex cursor-pointer gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
                         onClick={() => setSelectedCategory("textbooks")}
                     >
                         <div className={" ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
@@ -198,7 +198,7 @@ export default function Content() {
                         <h1 className={"font-semibold"}>Textbooks</h1>
                     </div>
                     <div
-                        className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
+                        className={"flex cursor-pointer gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
                         onClick={() => setSelectedCategory("tools")}
                     >
                         <div className={" ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
@@ -207,7 +207,7 @@ export default function Content() {
                         <h1 className={"font-semibold"}>Tools/Equipment</h1>
                     </div>
                     <div
-                        className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
+                        className={"flex cursor-pointer gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
                         onClick={() => setSelectedCategory("furniture")}
                     >
                         <div className={"ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
@@ -216,7 +216,7 @@ export default function Content() {
                         <h1 className={"font-semibold"}>Furniture</h1>
                     </div>
                     <div
-                        className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
+                        className={"flex cursor-pointer gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
                         onClick={() => setSelectedCategory("electronics")}
                     >
                         <div className={"ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
@@ -225,7 +225,7 @@ export default function Content() {
                         <h1 className={"font-semibold"}>Electronics</h1>
                     </div>
                     <div
-                        className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
+                        className={"flex cursor-pointer gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
                         onClick={() => setSelectedCategory("clothing")}
                     >
                         <div className={"ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
@@ -234,7 +234,7 @@ export default function Content() {
                         <h1 className={"font-semibold"}>Clothing</h1>
                     </div>
                     <div
-                        className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
+                        className={"flex cursor-pointer gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
                         onClick={() => setSelectedCategory("school supplies")}
                     >
                         <div className={"ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
