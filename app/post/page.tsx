@@ -4,6 +4,15 @@ import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
 import { useState, useEffect } from "react";
 import { createPost, loginUser } from "@/lib/pocketbase";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/select"
 
 const Page = () => {
     const [fileName, setFileName] = useState("");
