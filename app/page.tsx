@@ -1,5 +1,4 @@
 'use client';
-"use client"
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -7,6 +6,8 @@ import { useEffect, useRef } from "react";
 import { logoutUser } from "@/lib/pocketbase";
 import './globals.css';
 import Link from "next/link";
+import pb  from "@/lib/pocketbase"
+import {useRouter} from "next/navigation"
 
 export default function Home() {
     const textVariants = {
@@ -14,9 +15,11 @@ export default function Home() {
         visible: { opacity: 1, y: 0 },
     };
 
-    useEffect(() => {
-        logoutUser();
-      }, []);
+	const router = useRouter()
+	if (pb.authStore.isValid) {
+		router.replace("/marketplace")
+	}
+
 
     return (
         <section
