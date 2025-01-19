@@ -57,20 +57,20 @@ export default function NavBar() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/Saved">
+              <Link href="/saved">
                 <Bookmark className="mr-2" />
                 Saved
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/Help">
+              <Link href="/help">
                 <HelpCircle className="mr-2" />
                 Help and Support
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/Settings">
+              <Link href="/settings">
                 <Settings className="mr-2" />
                 Settings
               </Link>
