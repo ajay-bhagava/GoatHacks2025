@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  Info,
   CircleUserRound,
   DiamondPlus,
   MessageCircle,
@@ -64,7 +65,7 @@ export default function NavBar() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/help">
+              <Link href="/about">
                 <HelpCircle className="mr-2" />
                 Help and Support
               </Link>
