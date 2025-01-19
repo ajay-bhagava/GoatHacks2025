@@ -2,7 +2,7 @@
 import { ArrowUp } from "lucide-react";
 import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import { createPost, loginUser } from "@/lib/pocketbase";
 import { useRouter } from "next/navigation";
 import {
@@ -42,28 +42,29 @@ const Page = () => {
         }
     };
 
-    const handleCreatePost = async () => {
-            const createdPost = await createPost(title, description, price, selectedImages, tags);
-            console.log("Post created successfully:", createdPost);
-            const currentUser = pb.authStore.model;
-    
-            if (!currentUser) {
-                throw new Error("No user is currently logged in.");
-            }
-            const updatedPosts = Array.isArray(currentUser.Posts)
-                ? [...currentUser.Posts, createdPost.id]
-                : [createdPost.id];
-    
-            const updatePayload = { Posts: updatedPosts };
-            console.log("Updating user with payload:", updatePayload);
-    
-            await pb.collection("users").update(currentUser.id, updatePayload);
-            console.log("User's Posts field updated successfully.");
+    const handleCreatePost = async (e: any) => {
+        e.preventDefault();
+        const createdPost = await createPost(title, description, price, selectedImages, tags);
+        console.log("Post created successfully:", createdPost);
+        const currentUser = pb.authStore.model;
 
-            router.push("/marketplace");
+        if (!currentUser) {
+            throw new Error("No user is currently logged in.");
+        }
+        const updatedPosts = Array.isArray(currentUser.Posts)
+            ? [...currentUser.Posts, createdPost.id]
+            : [createdPost.id];
+
+        const updatePayload = { Posts: updatedPosts };
+        console.log("Updating user with payload:", updatePayload);
+
+        await pb.collection("users").update(currentUser.id, updatePayload);
+        console.log("User's Posts field updated successfully.");
+
+        router.push("/marketplace");
     };
-    
-    
+
+
 
     return (
         <div className="h-screen flex flex-col">
@@ -74,98 +75,105 @@ const Page = () => {
             <div className="flex flex-1 pt-16">
                 <aside
                     className="p-4 w-1/4 h-full shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)] fixed top-16 left-0 overflow-y-auto bg-white">
-                    <div className="space-y-4 mb-20">
-                        <div className="flex">
-                            <div
-                                className="p-4 rounded-3xl text-center bg-[#e9e9e9] size-36 flex flex-col justify-center items-center relative"
-                            >
-                                {imagePreviews.length > 0 ? (
-                                    <div className="flex gap-2">
-                                        {imagePreviews.map((preview, index) => (
-                                            <img
-                                                key={index}
-                                                src={preview}
-                                                alt={`Uploaded ${index}`}
-                                                className="object-cover size-full rounded-3xl w-20 h-20"
-                                            />
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <>
-                                        <div className="p-1 inline-block bg-black rounded-full">
-                                            <ArrowUp className="h-6 w-6 text-white" />
+                    <form
+                    onSubmit={handleCreatePost}>
+                        <div className="space-y-4 mb-20">
+                            <div className="flex">
+                                <div
+                                    className="p-4 rounded-3xl text-center bg-[#e9e9e9] size-36 flex flex-col justify-center items-center relative"
+                                >
+                                    {imagePreviews.length > 0 ? (
+                                        <div className="flex gap-2">
+                                            {imagePreviews.map((preview, index) => (
+                                                <img
+                                                    key={index}
+                                                    src={preview}
+                                                    alt={`Uploaded ${index}`}
+                                                    className="object-cover size-full rounded-3xl w-20 h-20"
+                                                />
+                                            ))}
                                         </div>
-                                        <h1 className="mt-4 text-sm">
-                                            Choose files to drag and drop here
-                                        </h1>
-                                    </>
-                                )}
+                                    ) : (
+                                        <>
+                                            <div className="p-1 inline-block bg-black rounded-full">
+                                                <ArrowUp className="h-6 w-6 text-white" />
+                                            </div>
+                                            <h1 className="mt-4 text-sm">
+                                                Choose files to drag and drop here
+                                            </h1>
+                                        </>
+                                    )}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        name="selectedImages"
+                                        multiple
+                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                        onChange={handleFileChange}
+                                        required={true}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Title</label>
                                 <input
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                    onChange={handleFileChange}
+                                    type="text"
+                                    name="title"
+                                    placeholder="Add a title"
+                                    className="w-full border-4 border-gray-300  rounded-xl p-3 mt-1"
+                                    onChange={(event) => setTitle(event.target.value)}
                                     required={true}
                                 />
                             </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea
+                                    placeholder="Add a detailed description, with relevant information and the condition of the item"
+                                    name="description"
+                                    className="w-full border-4 border-gray-300 rounded-xl p-3 mt-1"
+                                    rows={4}
+                                    onChange={(event) => setDescription(event.target.value)}
+                                ></textarea>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Price</label>
+                                <input
+                                    type="text"
+                                    placeholder="Price"
+                                    name="price"
+                                    className="w-full border-4 border-gray-300 rounded-xl p-3 mt-1"
+                                    onChange={(event) => setPrice(event.target.value)}
+                                    required={true}
+                                />
+                            </div>
+
+                            <Select onValueChange={(value) => setTags(value)}>
+                                <SelectTrigger className="">
+                                    <SelectValue placeholder="Select a tag" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Select a Tag</SelectLabel>
+                                        <SelectItem value="Textbooks">Textbooks</SelectItem>
+                                        <SelectItem value="Tools/Equipment">Tools/Equipment</SelectItem>
+                                        <SelectItem value="Furniture">Furniture</SelectItem>
+                                        <SelectItem value="Electronics">Electronics</SelectItem>
+                                        <SelectItem value="Clothing">Clothing</SelectItem>
+                                        <SelectItem value="School Supplies">School Supplies</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+
+                            <button
+                                className={"text-white font-semibold p-3 mb-10 rounded-full bg-red-600 cursor-pointer hover:bg-red-700 transition"}
+                                type="submit">
+                                Publish
+                            </button>
                         </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Title</label>
-                            <input
-                                type="text"
-                                placeholder="Add a title"
-                                className="w-full border-4 border-gray-300  rounded-xl p-3 mt-1"
-                                onChange={(event) => setTitle(event.target.value)}
-                                required={true}
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Description</label>
-                            <textarea
-                                placeholder="Add a detailed description, with relevant information and the condition of the item"
-                                className="w-full border-4 border-gray-300 rounded-xl p-3 mt-1"
-                                rows={4}
-                                onChange={(event) => setDescription(event.target.value)}
-                            ></textarea>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Price</label>
-                            <input
-                                type="text"
-                                placeholder="Price"
-                                className="w-full border-4 border-gray-300 rounded-xl p-3 mt-1"
-                                onChange={(event) => setPrice(event.target.value)}
-                                required={true}
-                            />
-                        </div>
-
-                        <Select onValueChange={(value) => setTags(value)}>
-                            <SelectTrigger className="">
-                                <SelectValue placeholder="Select a tag" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Select a Tag</SelectLabel>
-                                    <SelectItem value="Textbooks">Textbooks</SelectItem>
-                                    <SelectItem value="Tools/Equipment">Tools/Equipment</SelectItem>
-                                    <SelectItem value="Furniture">Furniture</SelectItem>
-                                    <SelectItem value="Electronics">Electronics</SelectItem>
-                                    <SelectItem value="Clothing">Clothing</SelectItem>
-                                    <SelectItem value="School Supplies">School Supplies</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-
-                        <button
-                            className={"text-white font-semibold p-3 mb-10 rounded-full bg-red-600 cursor-pointer hover:bg-red-700 transition"}
-                            onClick={handleCreatePost}>
-                            Publish
-                        </button>
-                    </div>
+                    </form>
                 </aside>
 
 
