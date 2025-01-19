@@ -43,30 +43,23 @@ const Page = () => {
     };
 
     const handleCreatePost = async () => {
-            // Create the post
             const createdPost = await createPost(title, description, price, selectedImages, tags);
             console.log("Post created successfully:", createdPost);
-    
-            // Get the current user
             const currentUser = pb.authStore.model;
     
             if (!currentUser) {
                 throw new Error("No user is currently logged in.");
             }
-    
-            // Check if the user's `Posts` field exists and is properly initialized
             const updatedPosts = Array.isArray(currentUser.Posts)
                 ? [...currentUser.Posts, createdPost.id]
                 : [createdPost.id];
     
-            // Update the user's "Posts" field
             const updatePayload = { Posts: updatedPosts };
             console.log("Updating user with payload:", updatePayload);
     
             await pb.collection("users").update(currentUser.id, updatePayload);
             console.log("User's Posts field updated successfully.");
-    
-            // Redirect to the marketplace page
+
             router.push("/marketplace");
     };
     
@@ -74,17 +67,14 @@ const Page = () => {
 
     return (
         <div className="h-screen flex flex-col">
-            {/* Navbar */}
             <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
                 <NavBar />
             </div>
 
             <div className="flex flex-1 pt-16">
-                {/* Sidebar */}
                 <aside
                     className="p-4 w-1/4 h-full shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)] fixed top-16 left-0 overflow-y-auto bg-white">
                     <div className="space-y-4 mb-20">
-                        {/* Image Upload */}
                         <div className="flex">
                             <div
                                 className="p-4 rounded-3xl text-center bg-[#e9e9e9] size-36 flex flex-col justify-center items-center relative"
@@ -120,7 +110,6 @@ const Page = () => {
                             </div>
                         </div>
 
-                        {/* Form inputs for title, description, price, tags */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Title</label>
                             <input

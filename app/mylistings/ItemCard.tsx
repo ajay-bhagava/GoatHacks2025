@@ -31,7 +31,6 @@ const ItemCard: React.FC<ItemCardProps> = ({
                                              date,
                                              imageURLs = [],
                                            }) => {
-  // Ensure imageURL is always an array
   const images = Array.isArray(imageURLs) ? imageURLs : [imageURLs];
 
   return (
@@ -39,7 +38,6 @@ const ItemCard: React.FC<ItemCardProps> = ({
         <Dialog>
           <DialogTrigger>
             <div className={"group min-h-[400px] p-2 rounded-lg bg-gray-200"}>
-              {/* Display first image if available, otherwise fallback */}
               <Image
                   src={images[0] || "/bench.jpg"}
                   alt={"item image"}
@@ -58,7 +56,6 @@ const ItemCard: React.FC<ItemCardProps> = ({
 
           <DialogContent>
             <div className={"grid grid-cols-2 gap-x-3 p-6"}>
-              {/* Carousel for displaying images */}
               <div className="col-span-1">
                 <Carousel className="w-full max-w-xs">
                   <CarouselContent>

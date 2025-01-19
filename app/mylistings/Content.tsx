@@ -1,10 +1,12 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import pb, { getPostsForUser } from "@/lib/pocketbase";
 import ItemCard from "./ItemCard";
 import { RecordModel } from "pocketbase";
 import { ArrowUpDown } from "lucide-react";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/select";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Post {
   id: string;
@@ -21,8 +23,8 @@ interface Post {
 
 export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [sortBy, setSortBy] = useState<string>("Date"); // Default sorting by Date
-  const [sortOrder, setSortOrder] = useState<boolean>(true); // true for ascending, false for descending
+  const [sortBy, setSortBy] = useState<string>("Date");
+  const [sortOrder, setSortOrder] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -58,7 +60,6 @@ export default function Content() {
     fetchPosts();
   }, []);
 
-  // Sorting logic
   const sortPosts = (posts: Post[]) => {
     const sortedPosts = [...posts];
     switch (sortBy) {
@@ -86,13 +87,11 @@ export default function Content() {
 
   return (
     <div className="p-5">
-      {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-lg font-semibold">My Listings</h1>
-        {/* Sorting Controls */}
         <div className="flex items-center gap-2">
           <ArrowUpDown
-            className="w-12 h-12 cursor-pointer" // Increased size
+            className="w-12 h-12 cursor-pointer"
             onClick={() => setSortOrder(!sortOrder)}
           />
           <span className="font-semibold whitespace-nowrap">Sort by</span>
@@ -111,27 +110,36 @@ export default function Content() {
           </Select>
         </div>
       </div>
-
-      {/* Posts Grid */}
+    
       <div className="grid grid-cols-4 gap-4">
-        {sortedPosts.length > 0 ? (
-          sortedPosts.map((post) => (
-            <ItemCard
-              key={post.id}
-              image={post.image}
-              price={post.price}
-              title={post.title}
-              location={post.location}
-              contact={post.contact}
-              date={post.date}
-              tags={post.tags}
-              imageURLs={post.imageURLs}
-              description={post.description}
-            />
-          ))
-        ) : (
-          <p className="text-gray-500">No posts found.</p>
-        )}
+        <AnimatePresence>
+          {sortedPosts.length > 0 ? (
+            sortedPosts.map((post) => (
+              <motion.div
+                key={post.id}
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ItemCard
+                  image={post.image}
+                  price={post.price}
+                  title={post.title}
+                  location={post.location}
+                  contact={post.contact}
+                  date={post.date}
+                  tags={post.tags}
+                  imageURLs={post.imageURLs}
+                  description={post.description}
+                />
+              </motion.div>
+            ))
+          ) : (
+            <p className="text-gray-500">No posts found.</p>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

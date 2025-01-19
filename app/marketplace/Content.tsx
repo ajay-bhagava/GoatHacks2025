@@ -19,6 +19,7 @@ import { RecordModel } from "pocketbase";
 import pb, { getPosts } from "@/lib/pocketbase";
 import { useEffect, useState } from "react";
 import { Select, SelectItem, SelectTrigger, SelectContent, SelectValue } from "@/components/select";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface Post {
     id: string;
@@ -36,8 +37,9 @@ interface Post {
 export default function Content() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [sortBy, setSortBy] = useState<string>("Date"); // Default sorting by Date
-    const [sortOrder, setSortOrder] = useState<boolean>(true); // true for ascending, false for descending
+    const [sortBy, setSortBy] = useState<string>("Date");
+    const [sortOrder, setSortOrder] = useState<boolean>(true);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -63,14 +65,21 @@ export default function Content() {
                 );
                 setPosts(resolvedPosts);
             } catch (error) {
-                //console.error("Error fetching posts:", error);
+                console.error("Error fetching posts:", error);
             }
         };
 
         fetchPosts();
     }, []);
 
-    // Sorting logic
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value.toLowerCase());
+    };
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+    };
+
     const sortPosts = (posts: Post[]) => {
         const sortedPosts = [...posts];
         switch (sortBy) {
@@ -94,28 +103,39 @@ export default function Content() {
         return sortedPosts;
     };
 
-    const filteredPosts = selectedCategory
-        ? posts.filter((post) =>
-              post.tags.toLowerCase().includes(selectedCategory.toLowerCase())
-          )
-        : posts;
+    const filteredPosts = posts
+        .filter((post) => {
+            const matchesCategory = selectedCategory
+                ? post.tags.toLowerCase().includes(selectedCategory.toLowerCase())
+                : true;
+            const matchesSearch = searchQuery
+                ? post.title.toLowerCase().includes(searchQuery)
+                : true;
+            return matchesCategory && matchesSearch;
+        });
 
     const sortedFilteredPosts = sortPosts(filteredPosts);
 
     return (
         <div className={"flex"}>
             <aside className={"p-4 w-1/4 h-screen shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)]"}>
-                {/* Searchbar */}
-                <div className="my-3 mb-6 hidden lg:flex items-center bg-[#f1f1f1] rounded-full px-4 py-2 w-full max-w-xl hover:bg-gray-200 transition">
-                    <Search className="text-gray-500 w-5 h-5" />
+                <form
+                    className="my-3 mb-6 hidden lg:flex items-center bg-[#f1f1f1] rounded-full px-4 py-2 w-full max-w-xl hover:bg-gray-200 transition"
+                    onSubmit={handleSearchSubmit}
+                >
+                    <Search
+                        className="text-gray-500 w-5 h-5 cursor-pointer"
+                        onClick={handleSearchSubmit}
+                    />
                     <input
                         type="text"
                         placeholder="Search items"
                         className="bg-transparent ml-2 w-full outline-none text-gray-700"
+                        value={searchQuery}
+                        onChange={handleSearch}
                     />
-                </div>
+                </form>
 
-                {/* Sort By */}
                 <div className="flex items-center gap-2 mb-6">
                     <ArrowUpDown
                         className="w-5 h-5 cursor-pointer"
@@ -137,7 +157,6 @@ export default function Content() {
                     </Select>
                 </div>
 
-                {/* Options */}
                 <div>
                     <div className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}>
                         <div className={" ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
@@ -157,7 +176,6 @@ export default function Content() {
 
                 <hr className={"mb-3"} />
 
-                {/* Categories */}
                 <div>
                     <h1 className={"font-semibold mb-3"}>Categories</h1>
                     <div
@@ -226,25 +244,36 @@ export default function Content() {
                 </div>
             </aside>
 
-            <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4  p-6 w-full"}>
-                {sortedFilteredPosts.length > 0 ? (
-                    sortedFilteredPosts.map((post) => (
-                        <ItemCard
-                            key={post.id}
-                            image={post.image}
-                            price={post.price}
-                            title={post.title}
-                            location={post.location}
-                            contact={post.contact}
-                            date={post.date}
-                            tags={post.tags}
-                            imageURLs={post.imageURLs}
-                            description={post.description}
-                        />
-                    ))
-                ) : (
-                    <p className="text-gray-500">No posts found.</p>
-                )}
+            <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4 p-6 w-full"}>
+                <AnimatePresence>
+                    {sortedFilteredPosts.length > 0 ? (
+                        sortedFilteredPosts.map((post) => (
+                            <motion.div
+                                key={post.id}
+                                layout
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <ItemCard
+                                    key={post.id}
+                                    image={post.image}
+                                    price={post.price}
+                                    title={post.title}
+                                    location={post.location}
+                                    contact={post.contact}
+                                    date={post.date}
+                                    tags={post.tags}
+                                    imageURLs={post.imageURLs}
+                                    description={post.description}
+                                />
+                            </motion.div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500">No posts found.</p>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
