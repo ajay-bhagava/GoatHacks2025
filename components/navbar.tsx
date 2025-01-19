@@ -4,25 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import pb from "@/lib/pocketbase"
 import {
-    Info,
-    CircleUserRound,
     DiamondPlus,
     MessageCircle,
-    List,
-    Bookmark,
-    HelpCircle,
-    Settings,
-    LogOut,
 } from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-} from "@/components/dropdown";
-
-import { logoutUser } from "@/lib/pocketbase"
+import ProfileButton from "./ProfileButton";
 
 export default function NavBar() {
     return (
@@ -47,52 +32,9 @@ export default function NavBar() {
                     <DiamondPlus className="w-9 h-9" />
                 </Link>
                 <MessageCircle className="w-9 h-9" />
-                {pb.authStore.isValid ? <ProfileButton />
-                    : <Link href="/login" className="btn btm-nav-sm btn-ghost">Log In</Link>
-                }
+                <ProfileButton loggedIn={pb.authStore.isValid} />
             </div>
         </div>
     );
 }
 
-function ProfileButton() {
-    return <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-            <CircleUserRound className="w-9 h-9 cursor-pointer" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-            <DropdownMenuItem asChild>
-                <Link href="/mylistings">
-                    <List className="mr-2" />
-                    My Listings
-                </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-                <Link href="/saved">
-                    <Bookmark className="mr-2" />
-                    Saved
-                </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-                <Link href="/about">
-                    <HelpCircle className="mr-2" />
-                    Help and Support
-                </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-                <Link href="/settings">
-                    <Settings className="mr-2" />
-                    Settings
-                </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-                <Link href='/' onClick={logoutUser}>
-                    <LogOut className="mr-2" />
-                    Log Out
-                </Link>
-            </DropdownMenuItem>
-        </DropdownMenuContent>
-    </DropdownMenu>
-}

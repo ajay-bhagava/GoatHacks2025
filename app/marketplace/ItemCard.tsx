@@ -34,6 +34,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
     // Ensure imageURL is always an array
     const images = Array.isArray(imageURLs) ? imageURLs : [imageURLs];
 
+
     return (
         <div>
             <Dialog>
@@ -51,7 +52,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
                             <h1 className={"font-semibold text-md"}>${price}</h1>
                             <h1 className={"text-sm"}>{title}</h1>
                             <h1 className={"text-gray-400 text-sm"}>{location}</h1>
-                            <h1 className={"bg-gray-500 px-2 py-1 rounded-md inline-block"}>{tags}</h1>
+                            {tags && <h1 className={"badge badge-error text-white h-fit"}>{tags}</h1>}
                         </div>
                     </div>
                 </DialogTrigger>
