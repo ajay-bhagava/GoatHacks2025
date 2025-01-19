@@ -46,7 +46,6 @@ export default function NavBar() {
           <DiamondPlus className="w-9 h-9" />
         </Link>
         <MessageCircle className="w-9 h-9" />
-          <Link href={"/about"}><Info className={"w-9 h-9"}/></Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <CircleUserRound className="w-9 h-9 cursor-pointer" />
@@ -66,7 +65,7 @@ export default function NavBar() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/help">
+              <Link href="/about">
                 <HelpCircle className="mr-2" />
                 Help and Support
               </Link>
