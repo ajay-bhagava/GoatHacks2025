@@ -1,93 +1,84 @@
 "use client";
-
 import { useState, useEffect } from "react";
+import pb, { getPostsForUser } from "@/lib/pocketbase";
 import ItemCard from "./ItemCard";
-import { getPostsForUser, loginUser } from "@/lib/pocketbase"; // Adjust to your actual path
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
-import { ArrowDownUp } from "lucide-react";
-    
+import { RecordModel } from "pocketbase";
+
+interface Post {
+  id: string;
+  image: string;
+  price: number;
+  title: string;
+  location: string;
+  tags?: string[];
+  contact?: string;
+  date?: string;
+  imageURL: string; // Pre-resolved URL for the image
+}
 
 export default function Content() {
-  const [posts, setPosts] = useState([]);
-  const [sortOption, setSortOption] = useState("Date");
-  const [reverse, setReverse] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     // Fetch posts on load
     const fetchPosts = async () => {
       try {
         const fetchedPosts = await getPostsForUser();
-        console.log(fetchedPosts);
+
+        // Resolve image URLs and construct post data
+        const resolvedPosts = await Promise.all(
+          fetchedPosts.map(async (post: RecordModel) => {
+            const imageURL = pb.files.getURL(post, post.Images[0]); // Adjust this based on your data structure
+            return {
+              id: post.id,
+              image: post.Images[0], // Adjust based on your data structure
+              price: post.price,
+              title: post.title,
+              location: post.location,
+              tags: post.tags,
+              contact: post.contact,
+              date: post.date,
+              imageURL,
+            };
+          })
+        );
+
+        setPosts(resolvedPosts);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
     };
+
     fetchPosts();
   }, []);
 
-  // Handle sorting logic
-//   const sortedPosts = [...posts].sort((a, b) => {
-//     const isReversed = reverse ? -1 : 1;
-//     if (sortOption === "Date") {
-//       return isReversed * (new Date(a.date).getTime() - new Date(b.date).getTime());
-//     } else if (sortOption === "Title") {
-//       return isReversed * a.title.localeCompare(b.title);
-//     } else if (sortOption === "Price") {
-//       return isReversed * (a.price - b.price);
-//     }
-//     return 0;
-//   });
-
   return (
     <div className="p-5">
-      {/* Header Row */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="text-lg font-semibold">My Listings</div>
-        <div className="flex items-center gap-2">
-          {/* ArrowDownUp for reversing sort order */}
-          <ArrowDownUp
-            className={`w-5 h-5 cursor-pointer transition-transform ${
-              reverse ? "rotate-180" : "rotate-0"
-            }`}
-            onClick={() => setReverse(!reverse)}
-          />
-          {/* Sort Dropdown */}
-          <Select value={sortOption} onValueChange={(value) => setSortOption(value)}>
-            <SelectTrigger className="w-40">
-              <SelectValue>{sortOption}</SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Date">Date</SelectItem>
-              <SelectItem value="Title">Title</SelectItem>
-              <SelectItem value="Price">Price</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      {/* Header */}
+      <div className="mb-4">
+        <h1 className="text-lg font-semibold">My Listings</h1>
       </div>
 
-      {/* Posts Grid or Fallback */}
-      {/* {sortedPosts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {sortedPosts.map((post) => (
+      {/* Posts Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {posts.length > 0 ? (
+          posts.map((post) => (
             <ItemCard
               key={post.id}
+              image={post.image}
               price={post.price}
               title={post.title}
               location={post.location}
               tags={post.tags}
               contact={post.contact}
               date={post.date}
+              imageURL={post.imageURL}
             />
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-60 text-center">
-          <p className="text-gray-600 text-lg">You don't have any listings right now.</p>
-          <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Create a Listing
-          </button>
-        </div>
-      )} */}
+          ))
+        ) : (
+          <p className="text-gray-500">No posts found.</p>
+        )}
+      </div>
     </div>
   );
 }

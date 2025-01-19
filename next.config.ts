@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ["wpimarketplace.fly.dev"], // Add the hostname of your external image source
+  },
 };
 
 export default nextConfig;
