@@ -59,7 +59,7 @@ export const getPosts = async () => {
 }
 
 export const getPostsForUser = async (signal ?: AbortSignal) => {
-    const userId = pb.authStore.record.id;
+    const userId = pb.authStore.record?.id;
     const records = await pb.collection('Post').getFullList({
         filter: `Account = '${userId}'`,
         expand: 'Account',
@@ -69,12 +69,12 @@ export const getPostsForUser = async (signal ?: AbortSignal) => {
     return records;
 }
 
-export const getPostByID = async (id) => {
+export const getPostByID = async (id: any) => {
     return await pb.collection("Post").getOne(id)
 }
 
 export const getSavedPosts = async () => {
-    const userId = pb.authStore.record.id;
+    const userId = pb.authStore.record?.id;
     const records = await pb.collection('users').getFullList({
         filter: 'id != "${userId}"',
         expand: 'Saved',

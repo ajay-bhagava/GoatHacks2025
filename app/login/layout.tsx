@@ -1,12 +1,14 @@
-import pb from "@/lib/pocketbase"
+import Link from "next/link"
 
 export default function layout({ children }: any) {
 
 
     return <div className="h-screen">
-        <nav className="flex align-center flex-row p-4">
-            <a href="/" className="link">Home</a>
+        <nav className="flex align-center flex-row p-4 gap-3 shadow">
+            <Link href="/"><img src="/techtrade.png" className="w-9 h-9" /></Link>
+            <Link href="/" className="btn btn-sm btn-ghost">Home</Link>
+            <Link href="/marketplace" className="btn btn-sm btn-ghost">Marketplace</Link>
         </nav>
-        {children}
+        <div className="relative">{children}</div>
     </div>
 }

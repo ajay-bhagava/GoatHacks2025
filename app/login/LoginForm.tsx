@@ -35,8 +35,9 @@ export function LoginForm() {
     })
 
 
-    return <div className="w-1/3 mx-auto card shadow-xl p-4">
-        <form className="flex flex-col gap-2" ref={form}>
+    return <div className="w-1/3 mx-auto card shadow-xl p-6 mt-6">
+        <h1 className="mx-auto text-3xl font-bold">Log In or Sign Up</h1>
+        <form className="flex flex-col gap-4" ref={form}>
             <label className="form-control ">
                 <div className="label">
                     <span className="label-text">

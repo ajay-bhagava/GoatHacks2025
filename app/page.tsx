@@ -1,34 +1,20 @@
 'use client';
 "use client"
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+
 import { useEffect, useRef } from "react";
 import { logoutUser } from "@/lib/pocketbase";
 import './globals.css';
+import Link from "next/link";
 
 export default function Home() {
-    const imageVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-    };
-
     // Animation configuration for text
     const textVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
     };
 
-    const arrowVariants = {
-        bounce: {
-            y: [0, -10, 0],
-            transition: {
-                duration: 1,
-                repeat: Infinity,
-                ease: "easeInOut",
-            },
-        },
-    };
     const smoothScrollTo = (target: HTMLElement, duration: number) => {
         const startPosition = window.pageYOffset; // Current scroll position
         const targetPosition = target.getBoundingClientRect().top + startPosition; // Target position
@@ -120,12 +106,12 @@ export default function Home() {
                 >
                     <br /> Ready to trade?
                 </motion.p>
-                <motion.p className="flex justify-center items-center">
+                <motion.p className="flex justify-center items-center mt-4">
 
-                    <button className="flex items-center space-x-2 bg-red-600 text-white p-4 rounded-md hover:bg-red-700">
-                        <a href="/login">Get Started</a>
+                    <Link href="/marketplace" className="flex w-fit gap-2 btn btn-primary items-center">
+                        <span>Get Started</span>
                         <ArrowRight />
-                    </button>
+                    </Link>
                 </motion.p>
 
 
