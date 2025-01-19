@@ -2,7 +2,7 @@
 
 import pb, { getPosts } from "@/lib/pocketbase"
 
-export async function ItemListing({id}: any) {
+export async function ItemListing({ id }: any) {
     let post: any;
     try {
         post = await getPosts()

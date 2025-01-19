@@ -76,7 +76,7 @@ const Page = () => {
                 <aside
                     className="p-4 w-1/4 h-full shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)] fixed top-16 left-0 overflow-y-auto bg-white">
                     <form
-                    onSubmit={handleCreatePost}>
+                        onSubmit={handleCreatePost}>
                         <div className="space-y-4 mb-20">
                             <div className="flex">
                                 <div

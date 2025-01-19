@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ItemListing } from "./ItemListing";
 
 export default async function page({ params }: any) {
-    const {id} = await params
+    const { id } = await params
     return <html>
         <body className="h-screen">
             <nav className="px-[15%] w-full shadow-lg flex items-center">

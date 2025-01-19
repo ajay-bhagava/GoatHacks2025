@@ -21,7 +21,7 @@ interface Post {
   tags: string;
 }
 
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation"
 
 export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -30,7 +30,7 @@ export default function Content() {
   const router = useRouter()
 
   if (!pb.authStore.isValid) {
-	  router.push("/login")
+    router.push("/login")
   }
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function Content() {
           </Select>
         </div>
       </div>
-    
+
       <div className="grid grid-cols-4 gap-4">
         <AnimatePresence>
           {sortedPosts.length > 0 ? (

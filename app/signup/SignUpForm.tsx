@@ -15,13 +15,13 @@ export function SignUpForm() {
     }
 
 
-	const handleSubmit = (e: any) => {
-		e.preventDefault();
-		const { email, password } = Object.fromEntries(new FormData(e.currentTarget))
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        const { email, password } = Object.fromEntries(new FormData(e.currentTarget))
 
-		createUser(password, password, email)
-		.then(_ => router.replace("/marketplace"), _ => setErr(true))
-	}
+        createUser(password, password, email)
+            .then(_ => router.replace("/marketplace"), _ => setErr(true))
+    }
 
     useEffect(() => {
         form.current?.addEventListener("submit", handleSubmit)
@@ -55,8 +55,8 @@ export function SignUpForm() {
                 </div>
                 <input type="password" className="input input-bordered" name="idnum" placeholder="WPI ID #" required />
             </label>
-                <button name="login" type="submit" className="btn btn-primary flex-1">Sign Up!</button>
-				<Link href='/login' className="link self-center">Already have an account? Log In!</Link>
+            <button name="login" type="submit" className="btn btn-primary flex-1">Sign Up!</button>
+            <Link href='/login' className="link self-center">Already have an account? Log In!</Link>
             {err && <span className="text-error">Error Creating User</span>}
         </form>
     </div>
