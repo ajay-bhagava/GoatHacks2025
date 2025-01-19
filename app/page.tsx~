@@ -39,7 +39,7 @@ export default function Home() {
                     <div className="w-full h-full rounded-xl"><img src="/example_items/example11.png" className="rounded-xl object-cover max-h-full w-full" /></div>
                     <div className="w-full h-full rounded-xl"><img src="/example_items/example12.png" className="rounded-xl object-cover max-h-full w-full" /></div>
                 </div></div>
-            <div className="top-1/2 left-1/2 bg-white p-6 py-8 rounded-lg absolute translate-y-[-50%] translate-x-[-50%] ">
+            <div className="top-1/2 left-1/2 bg-white p-6 py-8 absolute translate-y-[-50%] translate-x-[-50%] ">
                 <div className={"absolute  size-full  -z-10 rounded-2xl"}/>
                 <motion.h1
                     className="font-[600] text-5xl lg:text-6xl text-center mb-4"
