@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/dialog";
+import {Trash} from "lucide-react";
 
 interface ItemCardProps {
   image: string;
@@ -53,17 +54,26 @@ const ItemCard: React.FC<ItemCardProps> = ({
         </DialogTrigger>
         <DialogContent>
           <div className={"grid grid-cols-2 gap-x-3"}>
-            <Image src={"/bench.jpg"} alt={"byeu"} width={500} height={750} className={"rounded-lg object-cover"}/>
+            <Image src={imageURL || "/bench.jpg"} alt={"byeu"} width={500} height={750} className={"rounded-lg object-cover max-h-[600px]"}/>
             <DialogHeader>
-              <DialogTitle className={"text-2xl"}>{title}</DialogTitle>
-              <DialogDescription>
-                <h1 className={"font-semibold text-xl text-black"}>${price}</h1>
-                {tags}
-                {contact}
-                <h1 className={"mt-10"}>{description}</h1>
-              </DialogDescription>
+              <div className={"relative"}>
+                <DialogTitle className={"text-2xl"}>{title}</DialogTitle>
+                <DialogDescription>
+                  <h1 className={"font-semibold text-xl text-black"}>${price}</h1>
+                  {tags}
+                  {contact}
+                  <h1 className={"mt-10"}>{description}</h1>
+                </DialogDescription>
+              </div>
+              <div className={"fixed bottom-6"}>
+                <button className={"flex px-2 py-1 bg-red-500 gap-x-2 rounded-md"}>
+                    <Trash className={"text-white"}/>
+                    <h1 className={"text-white"}>Delete</h1>
+                </button>
+              </div>
             </DialogHeader>
           </div>
+
         </DialogContent>
       </Dialog>
     </div>

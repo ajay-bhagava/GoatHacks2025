@@ -1,8 +1,61 @@
+"use client";
+
 import {Armchair, BookText, NotebookPen, Plug, Search, Shirt, ShoppingBasket, Store, Tag, Wrench} from "lucide-react";
 import ItemCard from "@/app/marketplace/ItemCard";
 import Link from "next/link";
+import { RecordModel } from "pocketbase";
+import pb, { getPostsForUser } from "@/lib/pocketbase";
+import {useEffect, useState} from "react";
+
+
+interface Post {
+    id: string;
+    description: string;
+    image: string;
+    price: number;
+    title: string;
+    location: string;
+    contact?: string;
+    date?: string;
+    imageURL: string;
+}
+
 
 export default function Content() {
+    const [posts, setPosts] = useState<Post[]>([]);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const fetchedPosts = await getPostsForUser();
+
+                const resolvedPosts = await Promise.all(
+                    fetchedPosts.map(async (post: RecordModel) => {
+                        const imageURL = pb.files.getURL(post, post.Images[0]);
+                        return {
+                            id: post.id,
+                            image: post.Images[0],
+
+                            price: post.Price || 0,
+                            title: post.Title || "Untitled",
+                            location: post.location,
+                            contact: post.contact,
+                            date: post.date,
+                            description: post.Description,
+                            imageURL,
+                        };
+                    })
+                );
+                console.log(resolvedPosts);
+
+                setPosts(resolvedPosts);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        };
+
+        fetchPosts().then();
+    }, []);
     return(
         <div className={"flex"}>
             <aside className={"p-4 w-1/4 h-screen shadow-[4px_0_6px_-1px_rgba(0,0,0,0.1)]"}>
@@ -87,8 +140,23 @@ export default function Content() {
             </aside>
 
             <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4  p-6 w-full "}>
-                <ItemCard location={"Off-Campus Apartment"} price={120} title={"Scandinavian Bench"} description={"Great bench, i sat on it so many times."}/>
-            </div>
+                {posts.length > 0 ? (
+                    posts.map((post) => (
+                        <ItemCard
+                            key={post.id}
+                            image={post.image}
+                            price={post.price}
+                            title={post.title}
+                            location={post.location}
+                            contact={post.contact}
+                            date={post.date}
+                            imageURL={post.imageURL}
+                            description={post.description}
+                        />
+                    ))
+                ) : (
+                    <p className="text-gray-500">No posts found.</p>
+                )}            </div>
         </div>
     )
 }

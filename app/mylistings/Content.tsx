@@ -14,25 +14,24 @@ interface Post {
   tags?: string[];
   contact?: string;
   date?: string;
-  imageURL: string; // Pre-resolved URL for the image
+  imageURL: string;
 }
 
 export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    // Fetch posts on load
     const fetchPosts = async () => {
       try {
         const fetchedPosts = await getPostsForUser();
 
-        // Resolve image URLs and construct post data
         const resolvedPosts = await Promise.all(
           fetchedPosts.map(async (post: RecordModel) => {
-            const imageURL = pb.files.getURL(post, post.Images[0]); // Adjust this based on your data structure
+            const imageURL = pb.files.getURL(post, post.Images[0]);
             return {
               id: post.id,
-              image: post.Images[0], // Adjust based on your data structure
+              image: post.Images[0],
+
               price: post.Price || 0,
               title: post.Title || "Untitled",
               location: post.location,
