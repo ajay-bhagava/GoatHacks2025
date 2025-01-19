@@ -72,8 +72,8 @@ export default function Home() {
             className="relative h-screen overflow-hidden flex"
         >
             <div className="relative">
-                <div className="absolute bg-[rgba(0,0,0,0.5)] w-full h-full" />
-                <div className="grid grid-rows-3 grid-cols-4 gap-2 p-2 h-full w-full">
+                <div className="absolute bg-[rgba(0,0,0,0.5)] w-screen h-full" />
+                <div className="grid grid-rows-3 grid-cols-4 gap-2 p-2 h-full w-screen">
                     <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
                     <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
                     <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
