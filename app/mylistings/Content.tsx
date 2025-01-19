@@ -21,10 +21,17 @@ interface Post {
   tags: string;
 }
 
+import {useRouter} from "next/navigation"
+
 export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [sortBy, setSortBy] = useState<string>("Date");
   const [sortOrder, setSortOrder] = useState<boolean>(true);
+  const router = useRouter()
+
+  if (!pb.authStore.isValid) {
+	  router.push("/login")
+  }
 
   useEffect(() => {
     const fetchPosts = async () => {
