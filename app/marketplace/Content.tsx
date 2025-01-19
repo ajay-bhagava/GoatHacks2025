@@ -15,7 +15,7 @@ import {
 import ItemCard from "@/app/marketplace/ItemCard";
 import Link from "next/link";
 import { RecordModel } from "pocketbase";
-import pb, { getPostsForUser } from "@/lib/pocketbase";
+import pb, { getPosts } from "@/lib/pocketbase";
 import { useEffect, useState } from "react";
 
 interface Post {
@@ -38,7 +38,7 @@ export default function Content() {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const fetchedPosts = await getPostsForUser();
+                const fetchedPosts = await getPosts();
 
                 const resolvedPosts = await Promise.all(
                     fetchedPosts.map(async (post: RecordModel) => {
