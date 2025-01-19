@@ -30,6 +30,7 @@ const ItemCard: React.FC<ItemCardProps> = ({price,title, description,location,ta
                           <h1 className={"font-semibold text-md"}>${price}</h1>
                           <h1 className={"text-sm"}>{title}</h1>
                           <h1 className={"text-gray-400 text-sm"}>{location}</h1>
+                          <h1 className={"bg-gray-500 px-2 py-1 rounded-md inline-block"}>{tags}</h1>
                       </div>
                   </div>
               </DialogTrigger>

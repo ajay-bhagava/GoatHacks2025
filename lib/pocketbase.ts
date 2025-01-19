@@ -24,13 +24,14 @@ export const logoutUser = async () => {
     await pb.authStore.clear();
 }
 
-export const createPost = async (title, description, price, images) => {
+export const createPost = async (title, description, price, images, tags) => {
     try {
         const data = new FormData();
         data.append("Title", title);
         data.append("Description", description);
         data.append("Account", pb.authStore.record.id);
         data.append("Price", price);
+        data.append("Tags", tags);
 
         images.forEach(image => {
             data.append('Images', image);

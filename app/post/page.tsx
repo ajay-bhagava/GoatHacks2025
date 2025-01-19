@@ -2,7 +2,7 @@
 import { ArrowUp } from "lucide-react";
 import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { createPost, loginUser } from "@/lib/pocketbase";
 import {
     Select,
@@ -32,22 +32,10 @@ const Page = () => {
         }
     };
 
-    // Login and set up user session
-    useEffect(() => {
-        const login = async () => {
-            try {
-                await loginUser("ajay.bhagava@gmail.com", "12345678");
-            } catch (error) {
-                console.error("Login failed", error);
-            }
-        };
-        login();
-    }, []);
-
     // Handle post creation
     const handleCreatePost = async () => {
         try {
-            const userUpdate = await createPost(title, description, price, selectedImages);
+            const userUpdate = await createPost(title, description, price, selectedImages, tags);
             console.log("Post created successfully:", userUpdate);
         } catch (error) {
             console.error('Error creating post:', error);
@@ -128,15 +116,23 @@ const Page = () => {
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Tags</label>
-                            <input
-                                type="text"
-                                placeholder="Add a tag"
-                                className="w-full border-4 border-gray-300 rounded-xl p-3 mt-1"
-                                onChange={(event) => setTags(event.target.value)}
-                            />
-                        </div>
+                        <Select onValueChange={(value: SetStateAction<string>) => setTags(value)}>
+                            <SelectTrigger className="">
+                                <SelectValue placeholder="Select a tag" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Select a Tag</SelectLabel>
+                                    <SelectItem value="Textbooks">Textbooks</SelectItem>
+                                    <SelectItem value="Tools/Equipment">Tools/Equipment</SelectItem>
+                                    <SelectItem value="Furniture">Furniture</SelectItem>
+                                    <SelectItem value="Electronics">Electronics</SelectItem>
+                                    <SelectItem value="Clothing">Clothing</SelectItem>
+                                    <SelectItem value="School Supplies">School Supplies</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+
 
                         <button
                             className={"text-white font-semibold p-3 mb-10 rounded-full bg-red-600 cursor-pointer hover:bg-red-700 transition"}

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
-import { useRef } from "react";
-
+import { useEffect, useRef } from "react";
+import { logoutUser } from "@/lib/pocketbase";
 import './globals.css';
 
 export default function Home() {
@@ -65,6 +65,10 @@ export default function Home() {
             smoothScrollTo(targetElement, 1000); // Adjust the duration as needed (in milliseconds)
         }
     };
+
+    useEffect(() => {
+        logoutUser();
+      }, []);
 
     return (
         <section
