@@ -15,13 +15,13 @@ export function LoginForm() {
     }
 
 
-	const handleSubmit = (e: any) => {
-		e.preventDefault();
-		const { email, password } = Object.fromEntries(new FormData(e.currentTarget))
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        const { email, password } = Object.fromEntries(new FormData(e.currentTarget))
 
-		loginUser(email, password)
-		.then(_ => router.replace("/marketplace"), _ => setErr(true))
-	}
+        loginUser(email, password)
+            .then(_ => router.replace("/marketplace"), _ => setErr(true))
+    }
 
     useEffect(() => {
         form.current?.addEventListener("submit", handleSubmit)
@@ -47,8 +47,8 @@ export function LoginForm() {
                 </div>
                 <input type="password" className="input input-bordered" name="password" placeholder="Password" required />
             </label>
-                <button name="login" type="submit" className="btn btn-primary flex-1">Log In</button>
-				<Link href="/signup" className="link self-center">Don't have an account? Sign up!</Link>
+            <button name="login" type="submit" className="btn btn-primary flex-1">Log In</button>
+            <Link href="/signup" className="link self-center">Don't have an account? Sign up!</Link>
             {err && <span className="text-error">Error Logging In</span>}
         </form>
     </div>
