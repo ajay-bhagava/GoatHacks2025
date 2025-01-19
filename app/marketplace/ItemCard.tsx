@@ -22,17 +22,16 @@ interface ItemCardProps {
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
-                                               price,
-                                               title,
-                                               description,
-                                               location,
-                                               tags,
-                                               contact,
-                                               date,
-                                               imageURLs = [],
-                                           }) => {
+    price,
+    title,
+    description,
+    location,
+    tags,
+    contact,
+    date,
+    imageURLs = [],
+}) => {
     const images = Array.isArray(imageURLs) ? imageURLs : [imageURLs];
-
 
     return (
         <div>
@@ -88,8 +87,17 @@ const ItemCard: React.FC<ItemCardProps> = ({
                             <DialogDescription>
                                 <h1 className={"font-semibold text-xl text-black"}>${price}</h1>
                                 {tags && <div>{tags}</div>}
-                                {contact && <div>{contact}</div>}
                                 <h1 className={"mt-10"}>{description}</h1>
+                                {contact && (
+                                    <div className={"mt-4"}>
+                                        <a
+                                            href={`mailto:${contact}`}
+                                            className={"text-blue-600 underline hover:text-blue-800"}
+                                        >
+                                            Contact: {contact}
+                                        </a>
+                                    </div>
+                                )}
                             </DialogDescription>
                         </DialogHeader>
                     </div>
