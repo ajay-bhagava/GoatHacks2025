@@ -20,11 +20,11 @@ export function LoginForm() {
             case "signup":
                 console.log("signup")
                 createUser(password, password, email)
-                    .then(_ => location.href = "/", _ => setErr(true))
+                    .then(_ => location.href = "/marketplace", _ => setErr(true))
                 break;
             case "login":
                 loginUser(email, password)
-                    .then(_ => location.href = "/", _ => setErr(true))
+                    .then(_ => location.href = "/marketplace", _ => setErr(true))
                 console.log("login")
                 break;
         }
