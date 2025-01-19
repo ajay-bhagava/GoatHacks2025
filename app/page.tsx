@@ -1,36 +1,20 @@
 'use client';
 "use client"
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
-import { useRef } from "react";
-import pb from "@/lib/pocketbase"
+import { ArrowRight } from "lucide-react";
 
+import { useEffect, useRef } from "react";
+import { logoutUser } from "@/lib/pocketbase";
 import './globals.css';
 import Link from "next/link";
 
 export default function Home() {
-    const imageVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-    };
-
     // Animation configuration for text
     const textVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
     };
 
-    const arrowVariants = {
-        bounce: {
-            y: [0, -10, 0],
-            transition: {
-                duration: 1,
-                repeat: Infinity,
-                ease: "easeInOut",
-            },
-        },
-    };
     const smoothScrollTo = (target: HTMLElement, duration: number) => {
         const startPosition = window.pageYOffset; // Current scroll position
         const targetPosition = target.getBoundingClientRect().top + startPosition; // Target position
@@ -67,6 +51,10 @@ export default function Home() {
             smoothScrollTo(targetElement, 1000); // Adjust the duration as needed (in milliseconds)
         }
     };
+
+    useEffect(() => {
+        logoutUser();
+      }, []);
 
     return (
         <section

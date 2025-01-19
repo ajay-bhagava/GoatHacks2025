@@ -6,6 +6,7 @@ import { RecordModel } from "pocketbase";
 
 interface Post {
   id: string;
+  description: string;
   image: string;
   price: number;
   title: string;
@@ -13,44 +14,58 @@ interface Post {
   tags?: string[];
   contact?: string;
   date?: string;
-  imageURL: string; // Pre-resolved URL for the image
+  imageURL: string;
 }
 
 export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    // Fetch posts on load
+    const abortController = new AbortController(); // Create an AbortController
     const fetchPosts = async () => {
       try {
-        const fetchedPosts = await getPostsForUser();
-
-        // Resolve image URLs and construct post data
+        const fetchedPosts = await getPostsForUser(abortController.signal);
+  
         const resolvedPosts = await Promise.all(
           fetchedPosts.map(async (post: RecordModel) => {
-            const imageURL = pb.files.getURL(post, post.Images[0]); // Adjust this based on your data structure
+            const imageURL = pb.files.getURL(post, post.Images[0]);
             return {
               id: post.id,
-              image: post.Images[0], // Adjust based on your data structure
-              price: post.price,
-              title: post.title,
+              image: post.Images[0],
+              price: post.Price || 0,
+              title: post.Title || "Untitled",
               location: post.location,
               tags: post.tags,
               contact: post.contact,
               date: post.date,
+              description: post.Description,
               imageURL,
             };
           })
         );
-
+  
         setPosts(resolvedPosts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
+      } catch (error: any) {
+        // Suppress the specific "autocancelled" error
+        if (
+          error instanceof Error &&
+          error.name === "ClientResponseError" &&
+          error.message === "The request was autocancelled."
+        ) {
+          console.log("Request was cancelled, no action needed.");
+          return;
+        }
       }
     };
-
+  
     fetchPosts();
+  
+    // Cleanup function to abort the request on component unmount
+    return () => {
+      abortController.abort();
+    };
   }, []);
+  
 
   return (
     <div className="p-5">
@@ -60,7 +75,7 @@ export default function Content() {
       </div>
 
       {/* Posts Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {posts.length > 0 ? (
           posts.map((post) => (
             <ItemCard
@@ -73,6 +88,7 @@ export default function Content() {
               contact={post.contact}
               date={post.date}
               imageURL={post.imageURL}
+              description={post.description}
             />
           ))
         ) : (

@@ -24,13 +24,14 @@ export const logoutUser = async () => {
     await pb.authStore.clear();
 }
 
-export const createPost = async (title, description, price, images) => {
+export const createPost = async (title, description, price, images, tags) => {
     try {
         const data = new FormData();
         data.append("Title", title);
         data.append("Description", description);
         data.append("Account", pb.authStore.record.id);
         data.append("Price", price);
+        data.append("Tags", tags);
 
         images.forEach(image => {
             data.append('Images', image);
@@ -57,18 +58,29 @@ export const getPosts = async () => {
     return records;
 }
 
-export const getPostsForUser = async () => {
-    const userId = pb.authStore.record.id;
+export const getPostsForUser = async (signal ?: AbortSignal) => {
+    const userId = pb.authStore.record?.id;
     const records = await pb.collection('Post').getFullList({
         filter: 'Account != "${userId}"',
         expand: 'Account',
     });
+    console.log(records)
 
     return records;
 }
 
-export const getPostByID = async (id) => {
+export const getPostByID = async (id: any) => {
     return await pb.collection("Post").getOne(id)
+}
+
+export const getSavedPosts = async () => {
+    const userId = pb.authStore.record?.id;
+    const records = await pb.collection('users').getFullList({
+        filter: 'id != "${userId}"',
+        expand: 'Saved',
+    });
+
+    return records;
 }
 
 export default pb;
