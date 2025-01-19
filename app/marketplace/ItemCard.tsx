@@ -14,7 +14,7 @@ interface ItemCardProps {
     price: number,
     title: string,
     location: string;
-    tags?: [],
+    tags?: string,
     contact?: string;
     date?: string;
     description: string;
@@ -36,7 +36,7 @@ const ItemCard: React.FC<ItemCardProps> = ({price,title, description,location,ta
               <DialogContent>
 
                   <div className={"grid grid-cols-2 gap-x-3"}>
-                      <Image src={"/bench.jpg"} alt={"byeu"} width={500} height={750} className={"rounded-lg object-cover"}/>
+                      <Image src={imageURL || "/bench.jpg"} alt={"byeu"} width={500} height={750} className={"rounded-lg object-cover max-h-[600px]"}/>
                       <DialogHeader>
                           <DialogTitle className={"text-2xl"}>{title}</DialogTitle>
                           <DialogDescription>

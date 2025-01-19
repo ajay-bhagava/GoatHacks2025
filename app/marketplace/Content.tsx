@@ -18,6 +18,7 @@ interface Post {
     contact?: string;
     date?: string;
     imageURL: string;
+    tags: string;
 }
 
 
@@ -35,7 +36,7 @@ export default function Content() {
                         return {
                             id: post.id,
                             image: post.Images[0],
-
+                            tags: post.tag,
                             price: post.Price || 0,
                             title: post.Title || "Untitled",
                             location: post.location,
@@ -150,6 +151,7 @@ export default function Content() {
                             location={post.location}
                             contact={post.contact}
                             date={post.date}
+                            tags={post.tags}
                             imageURL={post.imageURL}
                             description={post.description}
                         />
