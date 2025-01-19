@@ -4,8 +4,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useRef } from "react";
+import pb from "@/lib/pocketbase"
 
 import './globals.css';
+import Link from "next/link";
 
 export default function Home() {
     const imageVariants = {
@@ -116,12 +118,12 @@ export default function Home() {
                 >
                     <br /> Ready to trade?
                 </motion.p>
-                <motion.p className="flex justify-center items-center">
+                <motion.p className="flex justify-center items-center mt-4">
 
-                    <button className="flex items-center space-x-2 bg-red-600 text-white p-4 rounded-md hover:bg-red-700">
-                        <a href="/login">Get Started</a>
+                    <Link href="/marketplace" className="flex w-fit gap-2 btn btn-primary items-center">
+                        <span>Get Started</span>
                         <ArrowRight />
-                    </button>
+                    </Link>
                 </motion.p>
 
 
