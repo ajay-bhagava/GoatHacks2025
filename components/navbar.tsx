@@ -1,9 +1,9 @@
 "use client"
 
 import Image from "next/image";
-import {Info, DiamondPlus, MessageCircle} from "lucide-react";
 import Link from "next/link";
 import {
+  Info,
   CircleUserRound,
   DiamondPlus,
   MessageCircle,
