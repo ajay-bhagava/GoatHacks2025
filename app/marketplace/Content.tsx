@@ -258,7 +258,6 @@ export default function Content() {
                             >
                                 <ItemCard
                                     key={post.id}
-                                    image={post.image}
                                     price={post.price}
                                     title={post.title}
                                     location={post.location}

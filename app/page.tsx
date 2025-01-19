@@ -1,5 +1,4 @@
 'use client';
-"use client"
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -7,6 +6,8 @@ import { useEffect, useRef } from "react";
 import { logoutUser } from "@/lib/pocketbase";
 import './globals.css';
 import Link from "next/link";
+import pb  from "@/lib/pocketbase"
+import {useRouter} from "next/navigation"
 
 export default function Home() {
     const textVariants = {
@@ -14,9 +15,11 @@ export default function Home() {
         visible: { opacity: 1, y: 0 },
     };
 
-    useEffect(() => {
-        logoutUser();
-      }, []);
+	const router = useRouter()
+	if (pb.authStore.isValid) {
+		router.replace("/marketplace")
+	}
+
 
     return (
         <section
@@ -27,10 +30,10 @@ export default function Home() {
                 <div className="absolute bg-[rgba(0,0,0,0.5)] w-screen h-full" />
                 <div className="grid grid-rows-3 grid-cols-4 gap-2 p-2 h-full w-screen">
                     <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
-                    <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/image2.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/image3.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/image4.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
+                    <div className="w-full h-full rounded-xl"><img src="/image4.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
                     <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
                     <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
                     <div className="w-full h-full rounded-xl"><img src="/image1.jpg" className="rounded-xl object-cover max-h-full w-full" /></div>
