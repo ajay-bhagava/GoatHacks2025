@@ -24,7 +24,7 @@ import {
 
 const Page = () => {
     const [fileName, setFileName] = useState("");
-    const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Store multiple previews
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
@@ -34,13 +34,12 @@ const Page = () => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const filesArray = Array.from(event.target.files);
-            setSelectedImages((prevImages) => [...prevImages, ...filesArray]); // Append selected images
+            setSelectedImages((prevImages) => [...prevImages, ...filesArray]);
             const newPreviews = filesArray.map((file) => URL.createObjectURL(file));
-            setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]); // Append previews
+            setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
         }
     };
 
-    // Handle post creation
     const handleCreatePost = async () => {
         try {
             const userUpdate = await createPost(title, description, price, selectedImages);
@@ -57,7 +56,6 @@ const Page = () => {
                 <NavBar />
             </div>
 
-            {/* Main Layout */}
             <div className="flex flex-1 pt-16">
                 {/* Sidebar */}
                 <aside
