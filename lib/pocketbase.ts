@@ -58,12 +58,13 @@ export const getPosts = async () => {
     return records;
 }
 
-export const getPostsForUser = async () => {
+export const getPostsForUser = async (signal ?: AbortSignal) => {
     const userId = pb.authStore.record.id;
     const records = await pb.collection('Post').getFullList({
         filter: 'Account != "${userId}"',
         expand: 'Account',
     });
+    console.log(records)
 
     return records;
 }

@@ -21,17 +21,17 @@ export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
+    const abortController = new AbortController(); // Create an AbortController
     const fetchPosts = async () => {
       try {
-        const fetchedPosts = await getPostsForUser();
-
+        const fetchedPosts = await getPostsForUser(abortController.signal);
+  
         const resolvedPosts = await Promise.all(
           fetchedPosts.map(async (post: RecordModel) => {
             const imageURL = pb.files.getURL(post, post.Images[0]);
             return {
               id: post.id,
               image: post.Images[0],
-
               price: post.Price || 0,
               title: post.Title || "Untitled",
               location: post.location,
@@ -43,16 +43,29 @@ export default function Content() {
             };
           })
         );
-        console.log(resolvedPosts);
-
+  
         setPosts(resolvedPosts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
+      } catch (error: any) {
+        // Suppress the specific "autocancelled" error
+        if (
+          error instanceof Error &&
+          error.name === "ClientResponseError" &&
+          error.message === "The request was autocancelled."
+        ) {
+          console.log("Request was cancelled, no action needed.");
+          return;
+        }
       }
     };
-
-    fetchPosts().then();
+  
+    fetchPosts();
+  
+    // Cleanup function to abort the request on component unmount
+    return () => {
+      abortController.abort();
+    };
   }, []);
+  
 
   return (
     <div className="p-5">
