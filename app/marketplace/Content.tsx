@@ -36,7 +36,7 @@ export default function Content() {
                         return {
                             id: post.id,
                             image: post.Images[0],
-                            tags: post.tag,
+                            tags: post.Tags,
                             price: post.Price || 0,
                             title: post.Title || "Untitled",
                             location: post.location,
