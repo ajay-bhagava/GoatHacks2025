@@ -42,7 +42,7 @@ const Page = () => {
 
     const handleCreatePost = async () => {
         try {
-            const userUpdate = await createPost(title, description, price, selectedImages);
+            const userUpdate = await createPost(title, description, price, selectedImages, tags);
             console.log("Post created successfully:", userUpdate);
         } catch (error) {
             console.error('Error creating post:', error);
