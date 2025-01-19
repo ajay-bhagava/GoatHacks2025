@@ -43,14 +43,34 @@ const Page = () => {
     };
 
     const handleCreatePost = async () => {
-        try {
-            const userUpdate = await createPost(title, description, price, selectedImages, tags);
-            console.log("Post created successfully:", userUpdate);
+            // Create the post
+            const createdPost = await createPost(title, description, price, selectedImages, tags);
+            console.log("Post created successfully:", createdPost);
+    
+            // Get the current user
+            const currentUser = pb.authStore.model;
+    
+            if (!currentUser) {
+                throw new Error("No user is currently logged in.");
+            }
+    
+            // Check if the user's `Posts` field exists and is properly initialized
+            const updatedPosts = Array.isArray(currentUser.Posts)
+                ? [...currentUser.Posts, createdPost.id]
+                : [createdPost.id];
+    
+            // Update the user's "Posts" field
+            const updatePayload = { Posts: updatedPosts };
+            console.log("Updating user with payload:", updatePayload);
+    
+            await pb.collection("users").update(currentUser.id, updatePayload);
+            console.log("User's Posts field updated successfully.");
+    
+            // Redirect to the marketplace page
             router.push("/marketplace");
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
     };
+    
+    
 
     return (
         <div className="h-screen flex flex-col">

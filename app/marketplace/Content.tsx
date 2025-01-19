@@ -11,12 +11,14 @@ import {
     Store,
     Tag,
     Wrench,
+    ArrowUpDown,
 } from "lucide-react";
 import ItemCard from "@/app/marketplace/ItemCard";
 import Link from "next/link";
 import { RecordModel } from "pocketbase";
 import pb, { getPosts } from "@/lib/pocketbase";
 import { useEffect, useState } from "react";
+import { Select, SelectItem, SelectTrigger, SelectContent, SelectValue } from "@/components/select";
 
 interface Post {
     id: string;
@@ -34,6 +36,8 @@ interface Post {
 export default function Content() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [sortBy, setSortBy] = useState<string>("Date"); // Default sorting by Date
+    const [sortOrder, setSortOrder] = useState<boolean>(true); // true for ascending, false for descending
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -42,8 +46,7 @@ export default function Content() {
 
                 const resolvedPosts = await Promise.all(
                     fetchedPosts.map(async (post: RecordModel) => {
-                        const imageURLs = post.Images.map((image: string) => pb.files.getURL(post,image));
-                        //const imageURL = pb.files.getURL(post, post.Images[]);
+                        const imageURLs = post.Images.map((image: string) => pb.files.getURL(post, image));
                         return {
                             id: post.id,
                             image: post.Images,
@@ -67,11 +70,37 @@ export default function Content() {
         fetchPosts();
     }, []);
 
+    // Sorting logic
+    const sortPosts = (posts: Post[]) => {
+        const sortedPosts = [...posts];
+        switch (sortBy) {
+            case "Title":
+                sortedPosts.sort((a, b) =>
+                    a.title.localeCompare(b.title) * (sortOrder ? 1 : -1)
+                );
+                break;
+            case "Price":
+                sortedPosts.sort((a, b) => (a.price - b.price) * (sortOrder ? 1 : -1));
+                break;
+            case "Date":
+            default:
+                sortedPosts.sort((a, b) =>
+                    new Date(a.date || "").getTime() -
+                    new Date(b.date || "").getTime()
+                );
+                if (!sortOrder) sortedPosts.reverse();
+                break;
+        }
+        return sortedPosts;
+    };
+
     const filteredPosts = selectedCategory
         ? posts.filter((post) =>
-            post.tags.toLowerCase().includes(selectedCategory.toLowerCase())
-        )
+              post.tags.toLowerCase().includes(selectedCategory.toLowerCase())
+          )
         : posts;
+
+    const sortedFilteredPosts = sortPosts(filteredPosts);
 
     return (
         <div className={"flex"}>
@@ -84,6 +113,28 @@ export default function Content() {
                         placeholder="Search items"
                         className="bg-transparent ml-2 w-full outline-none text-gray-700"
                     />
+                </div>
+
+                {/* Sort By */}
+                <div className="flex items-center gap-2 mb-6">
+                    <ArrowUpDown
+                        className="w-5 h-5 cursor-pointer"
+                        onClick={() => setSortOrder(!sortOrder)}
+                    />
+                    <span className="font-semibold">Sort by</span>
+                    <Select
+                        value={sortBy}
+                        onValueChange={(value) => setSortBy(value)}
+                    >
+                        <SelectTrigger className="w-full max-w-[150px]">
+                            <SelectValue placeholder="Select sort" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Date">Date</SelectItem>
+                            <SelectItem value="Title">Title</SelectItem>
+                            <SelectItem value="Price">Price</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 {/* Options */}
@@ -111,7 +162,7 @@ export default function Content() {
                     <h1 className={"font-semibold mb-3"}>Categories</h1>
                     <div
                         className={"flex gap-x-3 py-2 items-center hover:bg-gray-100 transition"}
-                        onClick={() => setSelectedCategory(null)} // Clear filter
+                        onClick={() => setSelectedCategory(null)}
                     >
                         <div className={"ml-2 bg-[#f1f1f1] hover:bg-gray-200 transition p-2 rounded-full"}>
                             <Store className={"w-5 h-5 "} />
@@ -175,9 +226,9 @@ export default function Content() {
                 </div>
             </aside>
 
-            <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4  p-6 w-full "}>
-                {filteredPosts.length > 0 ? (
-                    filteredPosts.map((post) => (
+            <div className={"grid grid-cols-4 bg-[#f2f2f2] gap-4  p-6 w-full"}>
+                {sortedFilteredPosts.length > 0 ? (
+                    sortedFilteredPosts.map((post) => (
                         <ItemCard
                             key={post.id}
                             image={post.image}
