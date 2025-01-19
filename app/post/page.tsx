@@ -2,7 +2,7 @@
 import { ArrowUp } from "lucide-react";
 import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { createPost, loginUser } from "@/lib/pocketbase";
 import {
     Select,
@@ -32,22 +32,10 @@ const Page = () => {
         }
     };
 
-    // Login and set up user session
-    useEffect(() => {
-        const login = async () => {
-            try {
-                await loginUser("ajay.bhagava@gmail.com", "12345678");
-            } catch (error) {
-                console.error("Login failed", error);
-            }
-        };
-        login();
-    }, []);
-
     // Handle post creation
     const handleCreatePost = async () => {
         try {
-            const userUpdate = await createPost(title, description, price, selectedImages);
+            const userUpdate = await createPost(title, description, price, selectedImages, tags);
             console.log("Post created successfully:", userUpdate);
         } catch (error) {
             console.error('Error creating post:', error);
@@ -128,7 +116,7 @@ const Page = () => {
                             />
                         </div>
 
-                        <Select onValueChange={(value) => setTags(value)}>
+                        <Select onValueChange={(value: SetStateAction<string>) => setTags(value)}>
                             <SelectTrigger className="">
                                 <SelectValue placeholder="Select a tag" />
                             </SelectTrigger>
