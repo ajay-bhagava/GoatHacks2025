@@ -4,8 +4,11 @@ import NavBar from "@/components/navbar";
 export default function page() {
     return (
         <>
-            <NavBar />
-            <Content />
+            <div className={"overflow-x-hidden"}>
+                <NavBar />
+                <Content />
+            </div>
+
         </>
     );
 }
