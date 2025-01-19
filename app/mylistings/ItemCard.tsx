@@ -34,13 +34,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
     <div>
       <Dialog>
         <DialogTrigger>
-          <div className="group">
+          <div className="min-h-[400px] p-2 rounded-lg bg-[#f1f1f1]">
             <Image
               src={imageURL || "/bench.jpg"}
               alt={title || "Listing image"}
               width={350}
               height={500}
-              className="rounded-lg"
+              className="rounded-lg max-h-[300px] object-cover"
             />
             <div className="mt-1 group-hover:underline text-left">
               <h1 className="font-semibold text-md">${price}</h1>

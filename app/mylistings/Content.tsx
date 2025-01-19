@@ -32,8 +32,8 @@ export default function Content() {
             return {
               id: post.id,
               image: post.Images[0], // Adjust based on your data structure
-              price: post.price,
-              title: post.title,
+              price: post.Price || 0,
+              title: post.Title || "Untitled",
               location: post.location,
               tags: post.tags,
               contact: post.contact,
@@ -42,6 +42,7 @@ export default function Content() {
             };
           })
         );
+        console.log(resolvedPosts);
 
         setPosts(resolvedPosts);
       } catch (error) {
@@ -49,7 +50,7 @@ export default function Content() {
       }
     };
 
-    fetchPosts();
+    fetchPosts().then();
   }, []);
 
   return (
@@ -60,7 +61,7 @@ export default function Content() {
       </div>
 
       {/* Posts Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {posts.length > 0 ? (
           posts.map((post) => (
             <ItemCard
