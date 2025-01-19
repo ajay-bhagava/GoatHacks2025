@@ -7,14 +7,14 @@ import { RecordModel } from "pocketbase";
 interface Post {
   id: string;
   description: string;
-  image: string;
+  image: string[];
   price: number;
   title: string;
   location: string;
-  tags?: string[];
   contact?: string;
   date?: string;
-  imageURL: string;
+  imageURLs: string[];
+  tags: string;
 }
 
 export default function Content() {
@@ -24,48 +24,35 @@ export default function Content() {
     const abortController = new AbortController(); // Create an AbortController
     const fetchPosts = async () => {
       try {
-        const fetchedPosts = await getPostsForUser(abortController.signal);
-  
+        const fetchedPosts = await getPostsForUser();
+
         const resolvedPosts = await Promise.all(
-          fetchedPosts.map(async (post: RecordModel) => {
-            const imageURL = pb.files.getURL(post, post.Images[0]);
-            return {
-              id: post.id,
-              image: post.Images[0],
-              price: post.Price || 0,
-              title: post.Title || "Untitled",
-              location: post.location,
-              tags: post.tags,
-              contact: post.contact,
-              date: post.date,
-              description: post.Description,
-              imageURL,
-            };
-          })
+            fetchedPosts.map(async (post: RecordModel) => {
+              const imageURLs = post.Images.map((image: string) => pb.files.getURL(post,image));
+              //const imageURL = pb.files.getURL(post, post.Images[]);
+              return {
+                id: post.id,
+                image: post.Images,
+                tags: post.Tags,
+                price: post.Price || 0,
+                title: post.Title || "Untitled",
+                location: post.location,
+                contact: post.contact,
+                date: post.date,
+                description: post.Description,
+                imageURLs,
+              };
+            })
         );
-  
+
         setPosts(resolvedPosts);
-      } catch (error: any) {
-        // Suppress the specific "autocancelled" error
-        if (
-          error instanceof Error &&
-          error.name === "ClientResponseError" &&
-          error.message === "The request was autocancelled."
-        ) {
-          console.log("Request was cancelled, no action needed.");
-          return;
-        }
+      } catch (error) {
+        //console.error("Error fetching posts:", error);
       }
     };
-  
-    fetchPosts();
-  
-    // Cleanup function to abort the request on component unmount
-    return () => {
-      abortController.abort();
-    };
+
+    fetchPosts().then();
   }, []);
-  
 
   return (
     <div className="p-5">
@@ -78,18 +65,18 @@ export default function Content() {
       <div className="grid grid-cols-4 gap-4">
         {posts.length > 0 ? (
           posts.map((post) => (
-            <ItemCard
-              key={post.id}
-              image={post.image}
-              price={post.price}
-              title={post.title}
-              location={post.location}
-              tags={post.tags}
-              contact={post.contact}
-              date={post.date}
-              imageURL={post.imageURL}
-              description={post.description}
-            />
+              <ItemCard
+                  key={post.id}
+                  image={post.image}
+                  price={post.price}
+                  title={post.title}
+                  location={post.location}
+                  contact={post.contact}
+                  date={post.date}
+                  tags={post.tags}
+                  imageURLs={post.imageURLs}
+                  description={post.description}
+              />
           ))
         ) : (
           <p className="text-gray-500">No posts found.</p>

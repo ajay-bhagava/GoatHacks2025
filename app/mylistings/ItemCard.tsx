@@ -8,75 +8,96 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/dialog";
-import {Trash} from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 interface ItemCardProps {
-  image: string;
   price: number;
   title: string;
   location: string;
-  tags?: string[];
+  tags?: string;
   contact?: string;
   date?: string;
-  imageURL: string;
   description: string;
+  imageURLs: string[] | string;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
-  image,
-  price,
-  title,
-  location,
-  tags,
-  contact,
-  date,
-  imageURL,
-    description
-}) => {
+                                             price,
+                                             title,
+                                             description,
+                                             location,
+                                             tags,
+                                             contact,
+                                             date,
+                                             imageURLs = [],
+                                           }) => {
+  // Ensure imageURL is always an array
+  const images = Array.isArray(imageURLs) ? imageURLs : [imageURLs];
+
   return (
-    <div>
-      <Dialog>
-        <DialogTrigger>
-          <div className="min-h-[400px] p-2 rounded-lg bg-[#f1f1f1]">
-            <Image
-              src={imageURL || "/bench.jpg"}
-              alt={title || "Listing image"}
-              width={350}
-              height={500}
-              className="rounded-lg max-h-[300px] object-cover"
-            />
-            <div className="mt-1 group-hover:underline text-left">
-              <h1 className="font-semibold text-md">${price}</h1>
-              <h1 className="text-sm">{title}</h1>
-              <h1 className="text-gray-400 text-sm">{location}</h1>
+      <div>
+        <Dialog>
+          <DialogTrigger>
+            <div className={"group min-h-[400px] p-2 rounded-lg bg-gray-200"}>
+              {/* Display first image if available, otherwise fallback */}
+              <Image
+                  src={images[0] || "/bench.jpg"}
+                  alt={"item image"}
+                  width={350}
+                  height={500}
+                  className={"rounded-lg object-cover max-h-[300px]"}
+              />
+              <div className={"mt-1 group-hover:underline text-left"}>
+                <h1 className={"font-semibold text-md"}>${price}</h1>
+                <h1 className={"text-sm"}>{title}</h1>
+                <h1 className={"text-gray-400 text-sm"}>{location}</h1>
+                <h1 className={"bg-gray-500 px-2 py-1 rounded-md inline-block"}>{tags}</h1>
+              </div>
             </div>
-          </div>
-        </DialogTrigger>
-        <DialogContent>
-          <div className={"grid grid-cols-2 gap-x-3"}>
-            <Image src={imageURL || "/bench.jpg"} alt={"byeu"} width={500} height={750} className={"rounded-lg object-cover max-h-[600px]"}/>
-            <DialogHeader>
-              <div className={"relative"}>
+          </DialogTrigger>
+
+          <DialogContent>
+            <div className={"grid grid-cols-2 gap-x-3 p-6"}>
+              {/* Carousel for displaying images */}
+              <div className="col-span-1">
+                <Carousel className="w-full max-w-xs">
+                  <CarouselContent>
+                    {images.length > 0 ? (
+                        images.map((url, index) => (
+                            <CarouselItem key={index}>
+                              <div className="p-1">
+                                <Image
+                                    src={url}
+                                    alt={`Item Image ${index}`}
+                                    width={500}
+                                    height={750}
+                                    className="rounded-lg object-cover w-full h-full"
+                                />
+                              </div>
+                            </CarouselItem>
+                        ))
+                    ) : (
+                        <div className="bg-[#e9e9e9] rounded-2xl w-full h-full"></div>
+                    )}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              </div>
+
+              <DialogHeader>
                 <DialogTitle className={"text-2xl"}>{title}</DialogTitle>
                 <DialogDescription>
                   <h1 className={"font-semibold text-xl text-black"}>${price}</h1>
-                  {tags}
-                  {contact}
+                  {tags && <div>{tags}</div>}
+                  {contact && <div>{contact}</div>}
                   <h1 className={"mt-10"}>{description}</h1>
                 </DialogDescription>
-              </div>
-              <div className={"fixed bottom-6"}>
-                <button className={"flex px-2 py-1 bg-red-500 gap-x-2 rounded-md"}>
-                    <Trash className={"text-white"}/>
-                    <h1 className={"text-white"}>Delete</h1>
-                </button>
-              </div>
-            </DialogHeader>
-          </div>
-
-        </DialogContent>
-      </Dialog>
-    </div>
+              </DialogHeader>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
   );
 };
 
