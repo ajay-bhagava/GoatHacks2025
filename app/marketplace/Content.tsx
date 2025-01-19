@@ -60,7 +60,7 @@ export default function Content() {
                 );
                 setPosts(resolvedPosts);
             } catch (error) {
-                console.error("Error fetching posts:", error);
+                //console.error("Error fetching posts:", error);
             }
         };
 

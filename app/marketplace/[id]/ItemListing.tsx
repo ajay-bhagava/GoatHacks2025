@@ -1,6 +1,6 @@
 'use client'
 
-import pb, { getPosts } from "@/lib/pocketbase.js"
+import pb, { getPosts } from "@/lib/pocketbase"
 
 export async function ItemListing({id}: any) {
     let post: any;

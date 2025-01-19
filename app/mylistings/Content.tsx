@@ -21,6 +21,7 @@ export default function Content() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
+    const abortController = new AbortController(); // Create an AbortController
     const fetchPosts = async () => {
       try {
         const fetchedPosts = await getPostsForUser();
@@ -43,11 +44,10 @@ export default function Content() {
               };
             })
         );
-        console.log(resolvedPosts);
 
         setPosts(resolvedPosts);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        //console.error("Error fetching posts:", error);
       }
     };
 
