@@ -4,6 +4,7 @@ import pb from "../../lib/pocketbase";
 import NavBar from "@/components/navbar";
 import React, { useState, useEffect } from "react";
 import { createPost, loginUser } from "@/lib/pocketbase";
+import { useRouter } from "next/navigation";
 import {
     Select,
     SelectContent,
@@ -30,6 +31,7 @@ const Page = () => {
     const [price, setPrice] = useState("");
     const [tags, setTags] = useState("");
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
+    const router = useRouter();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -44,6 +46,7 @@ const Page = () => {
         try {
             const userUpdate = await createPost(title, description, price, selectedImages, tags);
             console.log("Post created successfully:", userUpdate);
+            router.push("/marketplace");
         } catch (error) {
             console.error('Error creating post:', error);
         }
