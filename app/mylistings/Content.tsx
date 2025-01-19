@@ -43,7 +43,7 @@ export default function Content() {
               price: post.Price || 0,
               title: post.Title || "Untitled",
               location: post.location,
-              contact: post.contact,
+              contact: post.expand?.Account?.email,
               date: post.date,
               description: post.Description,
               imageURLs,
@@ -124,7 +124,6 @@ export default function Content() {
                 transition={{ duration: 0.3 }}
               >
                 <ItemCard
-                  image={post.image}
                   price={post.price}
                   title={post.title}
                   location={post.location}

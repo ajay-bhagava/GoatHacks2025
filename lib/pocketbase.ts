@@ -7,8 +7,13 @@ export const createUser = async (password, passwordConfirm, email) => {
         "password": password,
         "passwordConfirm": passwordConfirm,
         "email": email,
+        "emailVisibility": true,
     };
     const record = await pb.collection('users').create(data);
+    const authData = await pb.collection('users').authWithPassword(
+        email,
+        password,
+    );
     return record;
 }
 
@@ -52,9 +57,9 @@ export const createPost = async (title, description, price, images, tags) => {
 
 export const getPosts = async () => {
     const records = await pb.collection('Post').getFullList({
-        sort: 'created',
+        expand: "Account",
     });
-
+    console.log(records);
     return records;
 }
 
@@ -62,7 +67,7 @@ export const getPostsForUser = async (signal ?: AbortSignal) => {
     const userId = pb.authStore.record?.id;
     const records = await pb.collection('Post').getFullList({
         filter: `Account = '${userId}'`,
-        expand: 'Account',
+        expand: "Account",
     });
     console.log(records);
 
